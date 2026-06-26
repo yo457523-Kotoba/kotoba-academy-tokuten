@@ -1,177 +1,939 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=794">
-<title>ことばアカデミー｜ツール② 現場の通じない日本語 言い換え30選</title>
-<style>
-@page { size: A4 portrait; margin: 6mm; }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Meiryo','メイリオ','Hiragino Kaku Gothic ProN',sans-serif; background:#e8e4e0; display:flex; justify-content:center; padding:10px; }
-.poster { width:774px; min-width:774px; max-width:774px; background:#f2f0ed; }
-.hdr { background:#1a1a1a; display:flex; align-items:stretch; border-bottom:3px solid #d4694a; }
-.hdr-stripe { width:7px; flex-shrink:0; background:repeating-linear-gradient(180deg,#d4694a 0,#d4694a 9px,#1a1a1a 9px,#1a1a1a 15px); }
-.hdr-inner { flex:1; padding:8px 12px; display:flex; align-items:center; gap:10px; }
-.logo-wrap { background:#fff; border-radius:3px; padding:4px 5px; flex-shrink:0; }
-.hdr-text { flex:1; }
-.hdr-badge { display:inline-block; background:#d4694a; color:#fff; font-size:8px; font-weight:700; padding:1px 8px; letter-spacing:0.08em; margin-bottom:3px; }
-.hdr-title { font-size:15px; font-weight:700; color:#fff; line-height:1.2; }
-.hdr-title em { font-style:normal; color:#d4694a; }
-.hdr-sub { font-size:8px; color:#aaa; margin-top:3px; }
-.intro-bar { background:#2d2d2d; border-left:4px solid #d4694a; padding:6px 10px; display:flex; align-items:center; gap:8px; }
-.intro-txt { color:#eee; font-size:8.5px; font-weight:700; line-height:1.5; flex:1; }
-.intro-txt strong { color:#d4694a; }
-.intro-score { flex-shrink:0; background:#d4694a; color:#fff; border-radius:3px; padding:4px 10px; text-align:center; }
-.intro-score .s1 { font-size:7px; }
-.intro-score .s2 { font-size:16px; font-weight:700; line-height:1; }
-.intro-score .s3 { font-size:7px; }
-.body { display:grid; grid-template-columns:1fr 1fr; gap:3px; padding:3px; }
-.cat { background:#fff; border-top:3px solid #1a1a1a; }
-.cat-head { background:#1a1a1a; padding:5px 8px; display:flex; align-items:center; gap:5px; }
-.cat-num { background:#d4694a; color:#fff; font-size:9px; font-weight:700; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:2px; flex-shrink:0; }
-.cat-label { color:#fff; font-size:9px; font-weight:700; flex:1; }
-.cat-count { color:#d4694a; font-size:8px; font-weight:700; }
-.check-list { padding:4px; }
-.check-item { display:flex; align-items:flex-start; gap:5px; padding:4px 5px; margin-bottom:3px; border:1px solid #ede8e4; border-radius:2px; background:#fdf8f6; cursor:pointer; transition:all 0.15s; }
-.check-item:last-child { margin-bottom:0; }
-.check-item:hover { background:#faeee8; }
-.check-item.checked { background:#fdf0ec; border-color:#d4694a55; }
-.check-box { width:14px; height:14px; border:1.5px solid #ccc; border-radius:2px; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:transparent; }
-.check-item.checked .check-box { background:#d4694a; border-color:#d4694a; color:#fff; }
-.check-text { flex:1; }
-.check-main { font-size:9px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.check-item.checked .check-main { color:#b83820; }
-.check-note { font-size:7.5px; color:#999; margin-top:1px; line-height:1.2; }
-.check-tag { flex-shrink:0; font-size:7px; font-weight:700; padding:1px 4px; border-radius:2px; align-self:flex-start; margin-top:1px; white-space:nowrap; }
-.danger-high { background:#c04830; color:#fff; }
-.danger-mid  { background:#e8954a; color:#fff; }
-.danger-low  { background:#e8e0db; color:#666; }
-.tag-can  { background:#2a7a3a; color:#fff; }
-.tag-need { background:#d4694a; color:#fff; }
-.tag-str  { background:#1a1a1a; color:#fff; }
-.score-wrap { margin:0 3px 3px; display:grid; grid-template-columns:1fr 1fr; gap:3px; }
-.score-panel { background:#fff; border-top:3px solid #d4694a; padding:8px 10px; }
-.sp-title { font-size:8px; font-weight:700; color:#888; margin-bottom:6px; }
-.score-big { font-size:26px; font-weight:700; color:#d4694a; line-height:1; }
-.score-big span { font-size:9px; color:#999; font-weight:400; }
-.score-sub { font-size:8px; color:#888; margin-top:2px; line-height:1.4; }
-.bar-row { display:flex; align-items:center; gap:4px; margin-bottom:3px; }
-.bar-label { font-size:7.5px; color:#666; width:55px; flex-shrink:0; }
-.bar-track { flex:1; height:6px; background:#ede8e4; border-radius:3px; overflow:hidden; }
-.bar-fill { height:100%; border-radius:3px; transition:width 0.4s; }
-.fill-high { background:#c04830; }
-.fill-mid  { background:#d4694a; }
-.fill-low  { background:#1a1a1a; }
-.bar-num { font-size:8px; font-weight:700; color:#666; width:16px; text-align:right; flex-shrink:0; }
-.judge-panel { background:#fff; border-top:3px solid #d4694a; padding:8px 10px; }
-.jp-title { font-size:8px; font-weight:700; color:#888; margin-bottom:5px; }
-.judge-box { border:1.5px solid #ccc; border-radius:3px; padding:6px 8px; }
-.judge-level { font-size:10px; font-weight:700; color:#999; margin-bottom:3px; }
-.judge-msg { font-size:8px; color:#666; line-height:1.4; }
-.action-box { background:#fdf8f6; border:1px solid #d4694a; border-radius:3px; padding:5px 8px; margin-top:5px; }
-.action-title { font-size:7.5px; font-weight:700; color:#d4694a; margin-bottom:3px; }
-.action-item { font-size:8px; font-weight:700; color:#1a1a1a; padding:2px 0; border-bottom:1px solid #ede8e4; line-height:1.3; }
-.action-item:last-child { border-bottom:none; }
-.legend { margin:0 3px 3px; background:#fff; border-top:2px solid #1a1a1a; padding:5px 10px; display:flex; align-items:center; gap:12px; }
-.legend-title { font-size:8px; font-weight:700; color:#888; flex-shrink:0; }
-.legend-items { display:flex; gap:10px; flex-wrap:wrap; }
-.legend-item { display:flex; align-items:center; gap:4px; font-size:8px; color:#555; }
-.legend-dot { width:8px; height:8px; border-radius:1px; flex-shrink:0; }
-.ftr { background:#1a1a1a; border-top:3px solid #d4694a; padding:7px 12px; display:flex; align-items:center; gap:10px; }
-.ftr-logo-wrap { background:#fff; border-radius:3px; padding:3px 4px; flex-shrink:0; }
-.ftr-msg { flex:1; color:#ddd; font-size:8.5px; font-weight:700; line-height:1.5; }
-.ftr-msg strong { color:#d4694a; }
-.ftr-brand { flex-shrink:0; text-align:right; }
-.ftr-brand-name { color:#fff; font-size:10px; font-weight:700; }
-.ftr-brand-tag  { color:#d4694a; font-size:7.5px; margin-top:1px; }
-/* tool2 */
-.sec { background:#fff; border-top:3px solid #1a1a1a; }
-.sec-head { background:#1a1a1a; padding:5px 8px; display:flex; align-items:center; gap:5px; }
-.sec-num { background:#d4694a; color:#fff; font-size:9px; font-weight:700; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:2px; flex-shrink:0; }
-.sec-label { color:#fff; font-size:9px; font-weight:700; }
-.items { padding:4px; }
-.item { display:flex; align-items:stretch; margin-bottom:3px; border:1px solid #e8e0db; border-radius:2px; overflow:hidden; }
-.item:last-child { margin-bottom:0; }
-.item-before { background:#fdf5f3; border-right:2px solid #e8d8d2; padding:4px 6px; flex:1; min-width:0; }
-.item-arrow { background:#d4694a; display:flex; align-items:center; justify-content:center; padding:0 4px; color:#fff; font-size:10px; font-weight:700; flex-shrink:0; }
-.item-after { background:#fff; padding:4px 6px; flex:1; min-width:0; }
-.item-lbl { font-size:7px; font-weight:700; margin-bottom:1px; color:#999; }
-.item-before .item-lbl { color:#c04830; }
-.item-after .item-lbl  { color:#2a7a3a; }
-.item-txt { font-size:8.5px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.item-note { font-size:7px; color:#999; margin-top:1px; line-height:1.2; }
-/* tool3 */
-.how-bar { background:#2d2d2d; border-left:4px solid #d4694a; padding:5px 8px; display:flex; align-items:center; gap:8px; flex-wrap:nowrap; overflow:hidden; }
-.how-step { display:flex; align-items:center; gap:5px; flex-shrink:0; }
-.how-num { background:#d4694a; color:#fff; font-size:9px; font-weight:700; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.how-txt { color:#ddd; font-size:8px; font-weight:700; line-height:1.3; }
-.how-arrow { color:#d4694a; font-size:12px; font-weight:700; flex-shrink:0; }
-.diag-scroll { overflow-x:auto; padding:0 3px; }
-.lv-header { display:grid; grid-template-columns:110px repeat(5,1fr); gap:2px; padding:3px 0 0; min-width:700px; }
-.lv-cell { padding:5px 4px; text-align:center; border-radius:2px 2px 0 0; font-size:8px; font-weight:700; }
-.lv-head-cell { background:#1a1a1a; color:#fff; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; }
-.lv1c { background:#e8e0db; color:#555; }
-.lv2c { background:#d4b8a8; color:#442a1a; }
-.lv3c { background:#d4694a; color:#fff; }
-.lv4c { background:#b8402a; color:#fff; }
-.lv5c { background:#1a1a1a; color:#f0c040; border:1.5px solid #f0c040; }
-.lv-name { font-size:10px; font-weight:700; display:block; }
-.lv-sub  { font-size:7px; display:block; margin-top:1px; opacity:0.85; }
-.diag-rows { display:flex; flex-direction:column; gap:2px; min-width:700px; }
-.diag-row { display:grid; grid-template-columns:110px repeat(5,1fr); gap:2px; }
-.diag-cat { background:#1a1a1a; color:#fff; padding:5px 7px; display:flex; align-items:center; gap:4px; }
-.diag-cat-num { background:#d4694a; color:#fff; font-size:8px; font-weight:700; width:15px; height:15px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.diag-cat-name { font-size:8px; font-weight:700; line-height:1.3; }
-.diag-cell { background:#fff; border:1px solid #ede8e4; padding:4px 5px; cursor:pointer; transition:all 0.15s; position:relative; }
-.diag-cell:hover { border-color:#d4694a; background:#fdf0ec; }
-.diag-cell.selected { border-color:#d4694a; background:#d4694a; }
-.diag-cell.selected .dc-main { color:#fff; }
-.diag-cell.selected .dc-sub  { color:#ffd0c0; }
-.diag-cell.selected::after { content:'✓'; position:absolute; top:2px; right:4px; color:#fff; font-size:9px; font-weight:700; }
-.diag-cell.lv5c-cell { background:#f8f5e8; border-color:#d4aa30; }
-.diag-cell.lv5c-cell:hover { background:#f0e8c0; border-color:#f0c040; }
-.diag-cell.lv5c-cell.selected { background:#1a1a1a; border-color:#f0c040; }
-.diag-cell.lv5c-cell.selected .dc-main { color:#f0c040; }
-.diag-cell.lv5c-cell.selected::after { color:#f0c040; }
-.dc-main { font-size:8px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.dc-sub  { font-size:7px; color:#999; margin-top:1px; line-height:1.2; }
-.result-panel { margin:0 3px 3px; background:#fff; border-top:3px solid #d4694a; padding:8px 10px; display:flex; align-items:stretch; gap:10px; }
-.rp-left { flex-shrink:0; width:130px; }
-.rp-title { font-size:8px; font-weight:700; color:#888; margin-bottom:4px; }
-.rp-lv-disp { font-size:22px; font-weight:700; color:#d4694a; line-height:1; margin-bottom:2px; }
-.rp-lv-name { font-size:9px; font-weight:700; color:#1a1a1a; margin-bottom:4px; line-height:1.3; }
-.rp-score { font-size:8px; color:#888; }
-.pb-wrap { margin-top:5px; }
-.pb-label { font-size:7.5px; color:#888; margin-bottom:2px; display:flex; justify-content:space-between; }
-.pb-track { height:6px; background:#ede8e4; border-radius:3px; overflow:hidden; }
-.pb-fill { height:100%; background:#d4694a; border-radius:3px; transition:width 0.4s; }
-.rp-mid { flex:1; border-left:1px solid #ede8e4; padding-left:10px; }
-.rp-mid-title { font-size:8px; font-weight:700; color:#888; margin-bottom:5px; }
-.rp-tasks { display:flex; flex-direction:column; gap:3px; }
-.rp-task { display:flex; align-items:flex-start; gap:5px; padding:4px 6px; background:#fdf8f6; border-left:2px solid #d4694a; font-size:8px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.rp-right { flex-shrink:0; width:170px; border-left:1px solid #ede8e4; padding-left:10px; }
-.rp-right-title { font-size:8px; font-weight:700; color:#888; margin-bottom:5px; }
-.cta-head { background:#d4694a; color:#fff; padding:5px 8px; font-size:9px; font-weight:700; border-radius:2px 2px 0 0; }
-.cta-head.gold { background:#1a1a1a; color:#f0c040; }
-.cta-body { background:#fdf8f6; border:1px solid #d4694a; border-top:none; padding:5px 8px; border-radius:0 0 2px 2px; }
-.cta-body.gold-b { border-color:#d4aa30; background:#f8f5e8; }
-.cta-row { display:flex; justify-content:space-between; align-items:center; padding:2px 0; border-bottom:1px solid #ede8e4; font-size:7.5px; }
-.cta-row:last-child { border-bottom:none; }
-.cta-row-l { color:#666; }
-.cta-row-v { color:#d4694a; font-weight:700; }
-.cta-row-v.gold { color:#b8820a; }
-.lv-guide { margin:0 3px 3px; display:grid; grid-template-columns:repeat(5,1fr); gap:2px; }
-.lg-card { padding:5px 7px; border-radius:2px; border-top:2px solid; }
-.lg-l1 { background:#f5f2f0; border-color:#b0a8a0; }
-.lg-l2 { background:#f5ede8; border-color:#d4b8a8; }
-.lg-l3 { background:#fdf0ec; border-color:#d4694a; }
-.lg-l4 { background:#f5e0d8; border-color:#b8402a; }
-.lg-l5 { background:#1a1a1a; border-color:#f0c040; }
-.lg-title { font-size:8px; font-weight:700; color:#1a1a1a; margin-bottom:2px; }
-.lg-l5 .lg-title { color:#f0c040; }
-.lg-desc  { font-size:7px; color:#666; line-height:1.3; }
-.lg-l5 .lg-desc { color:#aaa; }
-.lg-price { font-size:7px; font-weight:700; color:#d4694a; margin-top:3px; padding-top:2px; border-top:1px solid #ede8e4; line-height:1.4; }
-.lg-l5 .lg-price { color:#f0c040; border-color:#444; }
-</style>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ことばアカデミー｜ツール② 現場の通じない日本語 言い換え30選</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-</head><body><div class="poster"><div class="hdr"><div class="hdr-stripe"></div><div class="hdr-inner"><div class="logo-wrap"><img src="data:image/png;base64,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" style="width:40px;height:40px;object-fit:contain;display:block;" alt="logo"></div><div class="hdr-text"><div class="hdr-badge">セミナー参加者限定　ツール②</div><div class="hdr-title">現場の「<em>通じない日本語</em>」言い換え <em>30</em> 選</div><div class="hdr-sub">〜 職長に渡して即、現場が楽になる！ 〜</div></div></div></div><div class="body"><div class="sec"><div class="sec-head"><div class="sec-num">1</div><div class="sec-label">現場用語・作業指示</div></div><div class="items"><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">段取りしといて</div><div class="item-note">何を・いつまでが不明</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">10時までに材料をA工区に並べておいて</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">けがきしておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">ここに線を引いて切る場所を示して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">ポンチ打って</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">印の中心を棒で叩いて目印をつけて</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">墨出ししておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">図面通りに床・壁に基準線を引いておいて</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">養生しておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">床と壁をシートで覆って汚れないようにして</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">天端合わせて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">上端の高さをこの基準に揃えて</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">シャックルかけて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">U字金具でワイヤーと部材をつないで締めて</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">ぬき差し込んで</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">型枠を支える横板をここに挟んで固定して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">番線で結束して</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">針金でここを3回巻いて固定して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">うわっぱりを水平に</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">上の横材を水準器で確認しながら取り付けて</div></div></div></div></div><div class="sec"><div class="sec-head"><div class="sec-num">2</div><div class="sec-label">曖昧表現の排除</div></div><div class="items"><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">適当にやっておいて</div><div class="item-note">基準がゼロ</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">50cmピッチで、図面A-03の通りに</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">いい感じにして</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">高さ1800mm、水平・垂直を確認して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">あとでやっておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">今日15時までに完了、終わったら報告して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">ちょっと直して</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">このボルトを右に3回転締め直して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">もっと丁寧に</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">溶接部を1箇所ずつ目視確認して隙間をなくして</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">早めにやって</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">13時までに完了、終わったら声をかけて</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">それくらいでいい</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">誤差±5mm以内が合格。それ以上はやり直し</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">そこら辺に置いておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">B区画の資材置き場の右端に積んで</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">危ないからちゃんとして</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">安全帯のフックを手すりにかけてから作業して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">いつもみたいにやって</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">手順書3ページ目のステップ2の通りに</div></div></div></div></div><div class="sec"><div class="sec-head"><div class="sec-num">3</div><div class="sec-label">指示の明確化</div></div><div class="items"><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">〜してもらえると助かります</div><div class="item-note">依頼か命令か不明</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">〜してください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">できれば〜をお願いしたい</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">〜を今日中に完了してください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">〜のほうがいいかもしれない</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">〜の方法で作業してください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">暇なときにやっておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">今日の午後イチに取り組んでください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">〜とかできる？</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">〜をやってください。難しければすぐ報告して</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">もしよければ確認しておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">作業前に必ず安全確認をしてください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">そのへん、よろしくね</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">このエリアの清掃・片付けを担当してください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">なんかあったら言って</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">問題・疑問は即座に私か職長に報告してください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">上手くやっておいて</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">手順書通りに進め、完了後に報告してください</div></div></div><div class="item"><div class="item-before"><div class="item-lbl">✕ NG</div><div class="item-txt">〜してくれると嬉しいな</div></div><div class="item-arrow">▶</div><div class="item-after"><div class="item-lbl">✓ OK</div><div class="item-txt">〜は必ず実施してください</div></div></div></div></div></div><div class="ftr"><div class="ftr-logo-wrap"><img src="data:image/png;base64,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" style="width:32px;height:32px;object-fit:contain;display:block;" alt="logo"></div><div class="ftr-msg">ことばアカデミーからのメッセージ<br><strong>言葉が通じれば、彼らは「作業員」から「戦友」に変わります。</strong></div><div class="ftr-brand"><div class="ftr-brand-name">吉岡ことばアカデミー</div><div class="ftr-brand-tag">建設業に育成と教育の文化を</div></div></div></div></body></html>
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f8f9fa;
+      color: #2c2c2c;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a0 100%);
+      color: white;
+      padding: 20px 16px 24px;
+      text-align: center;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .header h1 { font-size: 18px; font-weight: 700; line-height: 1.45; margin-bottom: 6px; }
+    .header .subtitle { font-size: 12px; opacity: 0.8; line-height: 1.5; }
+
+    /* カテゴリタブ */
+    .tab-bar {
+      background: white;
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 2px solid #e9ecef;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      border: none;
+      background: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+    }
+    .tab-btn.active { color: #1a3a5c; border-bottom-color: #1a3a5c; }
+
+    /* 検索 */
+    .search-bar {
+      padding: 12px 12px 8px;
+      background: white;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .search-input {
+      width: 100%;
+      padding: 9px 14px 9px 36px;
+      border: 1.5px solid #ddd;
+      border-radius: 20px;
+      font-size: 13px;
+      outline: none;
+      background: #f8f9fa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 12px center;
+    }
+    .search-input:focus { border-color: #2563a0; }
+
+    /* 説明バー */
+    .info-bar {
+      background: #f0f5ff;
+      border-left: 4px solid #2563a0;
+      margin: 12px;
+      padding: 10px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    /* 言い換えカード */
+    .cards {
+      padding: 0 12px 24px;
+    }
+    .category-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 16px 0 8px;
+      padding-left: 4px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: box-shadow 0.15s;
+    }
+    .card:active { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .card-header {
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .card-num {
+      width: 24px; height: 24px;
+      background: #1a3a5c;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .card-main { flex: 1; }
+    .card-ng {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e53e3e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ng-label {
+      font-size: 10px;
+      background: #fff0f0;
+      color: #e53e3e;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .arrow-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    .arrow { color: #34c47c; font-weight: 700; font-size: 16px; }
+    .card-ok {
+      font-size: 15px;
+      font-weight: 700;
+      color: #22863a;
+    }
+    .ok-label {
+      font-size: 10px;
+      background: #f0fff6;
+      color: #22863a;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .card-expand-icon {
+      color: #bbb;
+      font-size: 16px;
+      margin-top: 2px;
+      transition: transform 0.2s;
+    }
+    .card.open .card-expand-icon { transform: rotate(180deg); }
+    .card-detail {
+      display: none;
+      padding: 0 14px 14px 50px;
+      border-top: 1px solid #f5f5f5;
+    }
+    .card.open .card-detail { display: block; }
+    .detail-label { font-size: 11px; font-weight: 700; color: #888; margin: 10px 0 4px; }
+    .detail-text { font-size: 13px; color: #555; line-height: 1.6; }
+    .detail-example {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #2c2c2c;
+      line-height: 1.6;
+    }
+    .detail-example strong { color: #1a3a5c; }
+    .tip-badge {
+      display: inline-block;
+      background: #fff8e1;
+      color: #d97706;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-top: 8px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+      font-size: 14px;
+      display: none;
+    }
+
+    .footer {
+      background: #1a3a5c;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+    .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px; }
+
+    @media print {
+      body { background: white; }
+      .header { background: #1a3a5c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tab-bar, .search-bar { display: none; }
+      .card-detail { display: block !important; }
+      .card { break-inside: avoid; margin-bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">セミナー参加者限定 ツール②</div>
+  <h1>現場の「通じない日本語」<br><em style="font-style:normal;color:#7dd3fc;">言い換え30選</em></h1>
+  <p class="subtitle">職長に渡して即使える<br>現場用語を「動作言語」に変換するカード集</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="filterCategory('all', this)">すべて</button>
+  <button class="tab-btn" onclick="filterCategory('shiji', this)">指示・作業</button>
+  <button class="tab-btn" onclick="filterCategory('anzen', this)">安全・注意</button>
+  <button class="tab-btn" onclick="filterCategory('ninchi', this)">確認・認知</button>
+  <button class="tab-btn" onclick="filterCategory('kannkei', this)">人間関係</button>
+  <button class="tab-btn" onclick="filterCategory('jikan', this)">時間・納期</button>
+</div>
+
+<div class="search-bar">
+  <input class="search-input" type="text" placeholder="言葉を検索…" oninput="searchCards(this.value)">
+</div>
+
+<div class="info-bar">
+  カードをタップすると詳しい使い方・例文が表示されます。<strong>職長・現場リーダーがそのまま使える</strong>言い換えフレーズです。
+</div>
+
+<div class="cards" id="cardsContainer">
+
+  <div class="category-title" data-cat="shiji">指示・作業系</div>
+
+  <div class="card" data-cat="shiji" data-ng="段取り" data-ok="作業の順番・準備">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">1</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>段取り</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">作業の順番・準備</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「段取り」は日本語特有の概念語。「準備」とは似て非なるニュアンスで、外国人材には全体像が見えない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「じゃあ段取りよろしく」<br>
+        ✅「<strong>①道具を準備する ②材料を並べる ③開始する</strong>、この順番でやってください」
+      </div>
+      <span class="tip-badge">💡 順番を数字で示すと伝わりやすい</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="養生" data-ok="傷つかないようにテープ・シートで覆う">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">2</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>養生する</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">テープ・シートで覆って保護する</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「養生」は医療用語としても使われ、現場での意味（保護・被覆）とは別の意味に解釈されることがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「ここを養生しておいて」<br>
+        ✅「<strong>この壁と床を、汚れないようにテープとシートで覆ってください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="墨出し" data-ok="壁や床に作業ラインを書く">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">3</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>墨出し</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">壁・床に作業の線を引く</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">建設業界固有の専門用語。翻訳しても「墨」の意味が伝わらず、何をする作業なのか全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>ここに、このラインに沿って鉛筆・チョークで線を引いてください</strong>（設計図のこの部分）」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="適当にやっといて" data-ok="○○してください（具体的に）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">4</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>適当にやっといて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○の通りにやってください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本語の「適当」は文脈によって「いい加減」と「ちょうどよく」の両方の意味がある。外国人には混乱を招く。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「あとは適当にやっといて」<br>
+        ✅「<strong>この手順書の3番と4番を終わらせて、終わったら私に報告してください</strong>」
+      </div>
+      <span class="tip-badge">💡 「適当」「いい感じ」「うまくやって」はすべてNG</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="ちゃんとやって" data-ok="○○が○○になるようにやってください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">5</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>ちゃんとやって</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○が○○になるようにやってください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「ちゃんと」の基準が話し手と聞き手で全く異なる。外国人材は「ちゃんと」できていると思っているのに叱られるケースが多発。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「ちゃんとやってよ」<br>
+        ✅「<strong>ネジは、動かないくらいしっかり締めてください。手で回して止まったあと、さらに1/4回転（90度）締めます</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="見ておいて" data-ok="○○を確認して、問題があれば教えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">6</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>見ておいて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○を確認して、問題があれば教えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「見る」だけなのか「確認して報告する」のかが不明。目で見るだけで作業終了と判断してしまうことがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この接合部分を確認して、すき間があれば私を呼んでください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="気を利かせて" data-ok="○○の時は○○してください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">7</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>気を利かせて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○の時は○○してください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「空気を読む」「察する」は日本文化特有の概念。異なる文化圏の人には期待される行動が全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「もうちょっと気を利かせてほしい」<br>
+        ✅「<strong>材料が残り少なくなったら、補充の前に私に声をかけてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="段取り八分" data-ok="準備が仕事の8割です">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">8</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>段取り八分</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">準備が仕事の8割を決める</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本の職人言葉・慣用句。直訳しても意味が通じず、「8割って何が8割？」と混乱させてしまう。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>道具・材料の準備をしっかりすることが、仕事の成功の8割を決めます。作業を始める前に、必ずリストを確認してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="anzen">安全・注意系</div>
+
+  <div class="card" data-cat="anzen" data-ng="危ないから気をつけて" data-ok="○○をしないでください。理由は○○です">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">9</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>危ないから気をつけて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○しないでください。○○の危険があります</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「気をつける」が何を指すのか不明。何を避けるべきかが伝わらないため、事故防止にならない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この機械の近くでは、手袋をしたまま作業しないでください。手袋が巻き込まれてけがをする危険があります</strong>」
+      </div>
+      <span class="tip-badge">⚠️ 安全指示は「何をしない」＋「なぜか」がセット</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="KY活動" data-ok="作業前の危険確認">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">10</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>KY活動</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">作業前の「危ない場所・状況」の確認</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「KY（危険予知）」は日本語の略語。外国人には「空気読めない」の意味に混同されることもある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>作業を始める前に、5分間かけて「どこが危ないか」「どんな事故が起きるか」をみんなで確認します</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="フールプルーフ" data-ok="まちがえても大丈夫な仕組み">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">11</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>フールプルーフ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">間違えても事故にならない仕組み</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">英語由来のカタカナ語だが、実際の英語とは発音が大きく異なり、外国人に通じない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この部品は、向きを間違えても取り付けられないように形が違います。安心して作業できます</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="ヒヤリハット" data-ok="事故になりかけた出来事の報告">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">12</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>ヒヤリハット</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">「危なかった」出来事を報告する</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本語の擬音語（ヒヤリ＋ハット）から来た造語。意味が全く見えない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>事故にはならなかったけれど「危なかった」「びっくりした」ことがあれば、このシートに書いて提出してください。大事故を防ぐためです</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="ninchi">確認・認知系</div>
+
+  <div class="card" data-cat="ninchi" data-ng="わかった？" data-ok="○○を繰り返して言ってもらえますか">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">13</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>わかった？</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今言ったことを繰り返してもらえますか</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">多くの文化圏では「わかった？」に対して「はい」と答えることが礼儀。理解していなくても「はい」と言ってしまう。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「じゃあ、わかった？」<br>
+        ✅「<strong>今説明した手順を、自分の言葉で言ってみてください</strong>」
+      </div>
+      <span class="tip-badge">💡 理解確認は「復唱させる」が最も確実</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="ninchi" data-ng="確認しておいて" data-ok="○○を見て、○○かどうか教えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">14</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>確認しておいて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○を見て、問題があれば教えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「確認」が「見る」なのか「数える」なのか「報告する」なのかが不明。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この接合部分を見て、すき間が3mm以上あれば私に知らせてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="ninchi" data-ng="後で報告して" data-ok="○時○分までに○○を教えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">15</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>後で報告して</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○時までに○○を教えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「後で」がいつを指すのか不明。終業後なのか、数分後なのか解釈が分かれる。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>3時までに、今日の作業がどこまで終わったか教えてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="ninchi" data-ng="なんとなくわかる？" data-ok="どの部分がわからないですか">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">16</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>なんとなくわかる？</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">どの部分がわからないですか？</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「なんとなく」という曖昧な程度副詞は翻訳困難。かつ「わからない」と言えない文化的プレッシャーがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>1番・2番・3番の手順、どれかわからないものはありますか？遠慮なく聞いてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="kannkei">人間関係・コミュニケーション系</div>
+
+  <div class="card" data-cat="kannkei" data-ng="空気読んで" data-ok="○○の時は○○してください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">17</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>空気読んで</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○の時は○○してください（具体的に）</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「空気を読む」は日本文化特有の高コンテキストコミュニケーション。異なる文化圏の人には「空気」の意味すら不明。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「もうちょっと空気読んで」<br>
+        ✅「<strong>お客様が来た時は、作業を止めて挨拶してください。お客様がいない時は作業を続けてOKです</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="よろしくお願いします" data-ok="○○してください（具体的な依頼）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">18</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>よろしくお願いします</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○をお願いします（具体的な依頼内容）</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「よろしく」は日本語の万能丁寧語。依頼内容を含まないため、何をしてほしいのかが全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「じゃあ、よろしく！」<br>
+        ✅「<strong>では、A棟の1階の清掃をお願いします。終わったら報告してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="以心伝心" data-ok="言葉で伝えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">19</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>以心伝心</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">言葉にして伝えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">漢字4文字の慣用句。翻訳自体が難しく、そもそもの概念が異文化では共有されていない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>困ったこと・わからないことは、黙っていないで言葉で言ってください。言わないと、私にはわかりません</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="ホウレンソウ" data-ok="報告・連絡・相談をしてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">20</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>ホウレンソウ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">報告・連絡・相談の3つをしてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「報・連・相」の頭文字語。野菜のほうれん草を想像してしまう。ビジネス略語は外国人には伝わらない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>①仕事が終わったら私に言う（報告） ②変更があれば先に言う（連絡） ③困ったら一人で抱えず相談する（相談）――この3つをお願いします</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="jikan">時間・納期系</div>
+
+  <div class="card" data-cat="jikan" data-ng="早めにやって" data-ok="○月○日○時までにやってください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">21</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>早めにやって</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○日○時までにやってください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「早め」は人によって解釈が異なる。1時間後なのか、明日なのか、今週中なのかが全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「早めによろしく」<br>
+        ✅「<strong>今日の15時までに完成させてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="できるだけ早く" data-ok="○時間以内でお願いします">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">22</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>できるだけ早く</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○時間以内でお願いします</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「できるだけ」は自分の能力の範囲内での最速を意味するが、その期待値が話し手と聞き手で大きくずれる。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>急いでほしいです。2時間以内でできますか？</strong>もし無理なら教えてください」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="そろそろ" data-ok="今すぐ／5分以内に">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">23</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>そろそろ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今すぐ / ○分以内に</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「そろそろ」は曖昧な時間感覚を表す語。外国語への翻訳が難しく、緊急度が全く伝わらない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「そろそろ休憩終わりにして」<br>
+        ✅「<strong>3分後に作業を再開してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="今すぐ" data-ok="今すぐ（○分以内に）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">24</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>今すぐ！（怒鳴る）</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今すぐ止めてください。理由は○○です</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">感情的な指示は、プライドを傷つけ恐怖を与えるだけで行動変容につながらない。理由なき命令は反発を招く。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今すぐ機械を止めてください。（止めるボタンはここです）。○○の部品が外れていて危ないからです</strong>」
+      </div>
+      <span class="tip-badge">⚠️ 緊急時こそ理由をセットで伝える</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="いつでもいいよ" data-ok="○日○時までならいつでも大丈夫です">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">25</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>いつでもいいよ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○日までならいつでも大丈夫です</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「いつでも」が文字通りに解釈され、1ヶ月後に提出されたというトラブルが実際に発生している。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今週の金曜日（○月○日）までなら、いつ提出してもOKです</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="のりしろ" data-ok="重ねる部分の幅">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">26</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>のりしろ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">重ねる部分は○cmです</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">板金・建築の現場でよく使われる語だが、外国語に直訳できない和製語。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この板とあの板を3cmだけ重ねてください（写真を見せながら）</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="バリ取り" data-ok="角の出っ張りを削る・取る">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">27</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>バリ取り</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">角の出っ張り（鋭い部分）を削る</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「バリ」はポルトガル語由来の専門用語。外国人にも翻訳困難な現場語。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>切った後に残った金属の鋭い出っ張りを、このヤスリで削ってください（実物を見せながら）</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="あとは野となれ山となれ" data-ok="今日の作業はここで終わりです">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">28</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>あとは野となれ山となれ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今日はここで終わりです。片付けをしてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本語の慣用句・ことわざ。逐語訳しても全く意味が通じず、何をすべきかも不明。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今日の作業はここで終わりです。道具を片付けて、床を清掃してから帰宅してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="一丁前" data-ok="一人前（一人でできる）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">29</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>一丁前になったな</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">一人でできるようになりましたね、すごい</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">褒め言葉として使っているが、「丁前」という単位の概念が外国人には全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この作業、もう一人でできるようになりましたね！本当に上手くなりました</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="お疲れさま" data-ok="今日もありがとうございました">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">30</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>お疲れさま（だけ）</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今日もありがとう。○○がうまかった</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「お疲れさま」は日本語固有の労いの言葉。翻訳すると「あなたは疲れている」となり、ネガティブに聞こえることがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今日もありがとう。○○の作業、とても丁寧にできていました。また明日よろしく</strong>」
+      </div>
+      <span class="tip-badge">💡 「ありがとう」＋「具体的な褒め」が定着率を上げる</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="no-results" id="noResults">
+  該当する言い換えが見つかりませんでした
+</div>
+
+<div class="footer">
+  <div style="color:white;font-weight:700;font-size:13px;margin-bottom:4px;">吉岡ことばアカデミー</div>
+  <div>外国人材の定着・育成をサポート</div>
+  <div class="footer-links">
+    <a href="index.html">← 特典一覧に戻る</a>
+  </div>
+</div>
+
+<script>
+function toggleCard(card) {
+  card.classList.toggle('open');
+}
+
+function filterCategory(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+  });
+  document.querySelectorAll('.category-title').forEach(t => {
+    t.style.display = (cat === 'all' || t.dataset.cat === cat) ? '' : 'none';
+  });
+
+  // 検索フィールドをクリア
+  document.querySelector('.search-input').value = '';
+  document.getElementById('noResults').style.display = 'none';
+}
+
+function searchCards(q) {
+  const kw = q.trim().toLowerCase();
+  let found = 0;
+  document.querySelectorAll('.card').forEach(c => {
+    const ng = (c.dataset.ng || '').toLowerCase();
+    const ok = (c.dataset.ok || '').toLowerCase();
+    const hit = !kw || ng.includes(kw) || ok.includes(kw);
+    c.style.display = hit ? '' : 'none';
+    if (hit) found++;
+  });
+  document.querySelectorAll('.category-title').forEach(t => t.style.display = kw ? 'none' : '');
+  document.getElementById('noResults').style.display = (!kw || found > 0) ? 'none' : 'block';
+
+  // タブをリセット
+  if (kw) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tab-btn').classList.add('active');
+  }
+}
+</script>
