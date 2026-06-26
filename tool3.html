@@ -1,261 +1,787 @@
 <!DOCTYPE html>
-<html lang="ja"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=794">
-<title>ことばアカデミー｜ツール③ 日本語レベル簡易診断</title>
-<style>
-@page { size: A4 portrait; margin: 6mm; }
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Meiryo','メイリオ','Hiragino Kaku Gothic ProN',sans-serif; background:#e8e4e0; display:flex; justify-content:center; padding:10px; }
-.poster { width:774px; min-width:774px; max-width:774px; background:#f2f0ed; }
-.hdr { background:#1a1a1a; display:flex; align-items:stretch; border-bottom:3px solid #d4694a; }
-.hdr-stripe { width:7px; flex-shrink:0; background:repeating-linear-gradient(180deg,#d4694a 0,#d4694a 9px,#1a1a1a 9px,#1a1a1a 15px); }
-.hdr-inner { flex:1; padding:8px 12px; display:flex; align-items:center; gap:10px; }
-.logo-wrap { background:#fff; border-radius:3px; padding:4px 5px; flex-shrink:0; }
-.hdr-text { flex:1; }
-.hdr-badge { display:inline-block; background:#d4694a; color:#fff; font-size:8px; font-weight:700; padding:1px 8px; letter-spacing:0.08em; margin-bottom:3px; }
-.hdr-title { font-size:15px; font-weight:700; color:#fff; line-height:1.2; }
-.hdr-title em { font-style:normal; color:#d4694a; }
-.hdr-sub { font-size:8px; color:#aaa; margin-top:3px; }
-.intro-bar { background:#2d2d2d; border-left:4px solid #d4694a; padding:6px 10px; display:flex; align-items:center; gap:8px; }
-.intro-txt { color:#eee; font-size:8.5px; font-weight:700; line-height:1.5; flex:1; }
-.intro-txt strong { color:#d4694a; }
-.intro-score { flex-shrink:0; background:#d4694a; color:#fff; border-radius:3px; padding:4px 10px; text-align:center; }
-.intro-score .s1 { font-size:7px; }
-.intro-score .s2 { font-size:16px; font-weight:700; line-height:1; }
-.intro-score .s3 { font-size:7px; }
-.body { display:grid; grid-template-columns:1fr 1fr; gap:3px; padding:3px; }
-.cat { background:#fff; border-top:3px solid #1a1a1a; }
-.cat-head { background:#1a1a1a; padding:5px 8px; display:flex; align-items:center; gap:5px; }
-.cat-num { background:#d4694a; color:#fff; font-size:9px; font-weight:700; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:2px; flex-shrink:0; }
-.cat-label { color:#fff; font-size:9px; font-weight:700; flex:1; }
-.cat-count { color:#d4694a; font-size:8px; font-weight:700; }
-.check-list { padding:4px; }
-.check-item { display:flex; align-items:flex-start; gap:5px; padding:4px 5px; margin-bottom:3px; border:1px solid #ede8e4; border-radius:2px; background:#fdf8f6; cursor:pointer; transition:all 0.15s; }
-.check-item:last-child { margin-bottom:0; }
-.check-item:hover { background:#faeee8; }
-.check-item.checked { background:#fdf0ec; border-color:#d4694a55; }
-.check-box { width:14px; height:14px; border:1.5px solid #ccc; border-radius:2px; flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; color:transparent; }
-.check-item.checked .check-box { background:#d4694a; border-color:#d4694a; color:#fff; }
-.check-text { flex:1; }
-.check-main { font-size:9px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.check-item.checked .check-main { color:#b83820; }
-.check-note { font-size:7.5px; color:#999; margin-top:1px; line-height:1.2; }
-.check-tag { flex-shrink:0; font-size:7px; font-weight:700; padding:1px 4px; border-radius:2px; align-self:flex-start; margin-top:1px; white-space:nowrap; }
-.danger-high { background:#c04830; color:#fff; }
-.danger-mid  { background:#e8954a; color:#fff; }
-.danger-low  { background:#e8e0db; color:#666; }
-.tag-can  { background:#2a7a3a; color:#fff; }
-.tag-need { background:#d4694a; color:#fff; }
-.tag-str  { background:#1a1a1a; color:#fff; }
-.score-wrap { margin:0 3px 3px; display:grid; grid-template-columns:1fr 1fr; gap:3px; }
-.score-panel { background:#fff; border-top:3px solid #d4694a; padding:8px 10px; }
-.sp-title { font-size:8px; font-weight:700; color:#888; margin-bottom:6px; }
-.score-big { font-size:26px; font-weight:700; color:#d4694a; line-height:1; }
-.score-big span { font-size:9px; color:#999; font-weight:400; }
-.score-sub { font-size:8px; color:#888; margin-top:2px; line-height:1.4; }
-.bar-row { display:flex; align-items:center; gap:4px; margin-bottom:3px; }
-.bar-label { font-size:7.5px; color:#666; width:55px; flex-shrink:0; }
-.bar-track { flex:1; height:6px; background:#ede8e4; border-radius:3px; overflow:hidden; }
-.bar-fill { height:100%; border-radius:3px; transition:width 0.4s; }
-.fill-high { background:#c04830; }
-.fill-mid  { background:#d4694a; }
-.fill-low  { background:#1a1a1a; }
-.bar-num { font-size:8px; font-weight:700; color:#666; width:16px; text-align:right; flex-shrink:0; }
-.judge-panel { background:#fff; border-top:3px solid #d4694a; padding:8px 10px; }
-.jp-title { font-size:8px; font-weight:700; color:#888; margin-bottom:5px; }
-.judge-box { border:1.5px solid #ccc; border-radius:3px; padding:6px 8px; }
-.judge-level { font-size:10px; font-weight:700; color:#999; margin-bottom:3px; }
-.judge-msg { font-size:8px; color:#666; line-height:1.4; }
-.action-box { background:#fdf8f6; border:1px solid #d4694a; border-radius:3px; padding:5px 8px; margin-top:5px; }
-.action-title { font-size:7.5px; font-weight:700; color:#d4694a; margin-bottom:3px; }
-.action-item { font-size:8px; font-weight:700; color:#1a1a1a; padding:2px 0; border-bottom:1px solid #ede8e4; line-height:1.3; }
-.action-item:last-child { border-bottom:none; }
-.legend { margin:0 3px 3px; background:#fff; border-top:2px solid #1a1a1a; padding:5px 10px; display:flex; align-items:center; gap:12px; }
-.legend-title { font-size:8px; font-weight:700; color:#888; flex-shrink:0; }
-.legend-items { display:flex; gap:10px; flex-wrap:wrap; }
-.legend-item { display:flex; align-items:center; gap:4px; font-size:8px; color:#555; }
-.legend-dot { width:8px; height:8px; border-radius:1px; flex-shrink:0; }
-.ftr { background:#1a1a1a; border-top:3px solid #d4694a; padding:7px 12px; display:flex; align-items:center; gap:10px; }
-.ftr-logo-wrap { background:#fff; border-radius:3px; padding:3px 4px; flex-shrink:0; }
-.ftr-msg { flex:1; color:#ddd; font-size:8.5px; font-weight:700; line-height:1.5; }
-.ftr-msg strong { color:#d4694a; }
-.ftr-brand { flex-shrink:0; text-align:right; }
-.ftr-brand-name { color:#fff; font-size:10px; font-weight:700; }
-.ftr-brand-tag  { color:#d4694a; font-size:7.5px; margin-top:1px; }
-/* tool2 */
-.sec { background:#fff; border-top:3px solid #1a1a1a; }
-.sec-head { background:#1a1a1a; padding:5px 8px; display:flex; align-items:center; gap:5px; }
-.sec-num { background:#d4694a; color:#fff; font-size:9px; font-weight:700; width:18px; height:18px; display:flex; align-items:center; justify-content:center; border-radius:2px; flex-shrink:0; }
-.sec-label { color:#fff; font-size:9px; font-weight:700; }
-.items { padding:4px; }
-.item { display:flex; align-items:stretch; margin-bottom:3px; border:1px solid #e8e0db; border-radius:2px; overflow:hidden; }
-.item:last-child { margin-bottom:0; }
-.item-before { background:#fdf5f3; border-right:2px solid #e8d8d2; padding:4px 6px; flex:1; min-width:0; }
-.item-arrow { background:#d4694a; display:flex; align-items:center; justify-content:center; padding:0 4px; color:#fff; font-size:10px; font-weight:700; flex-shrink:0; }
-.item-after { background:#fff; padding:4px 6px; flex:1; min-width:0; }
-.item-lbl { font-size:7px; font-weight:700; margin-bottom:1px; color:#999; }
-.item-before .item-lbl { color:#c04830; }
-.item-after .item-lbl  { color:#2a7a3a; }
-.item-txt { font-size:8.5px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.item-note { font-size:7px; color:#999; margin-top:1px; line-height:1.2; }
-/* tool3 */
-.how-bar { background:#2d2d2d; border-left:4px solid #d4694a; padding:5px 8px; display:flex; align-items:center; gap:8px; flex-wrap:nowrap; overflow:hidden; }
-.how-step { display:flex; align-items:center; gap:5px; flex-shrink:0; }
-.how-num { background:#d4694a; color:#fff; font-size:9px; font-weight:700; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.how-txt { color:#ddd; font-size:8px; font-weight:700; line-height:1.3; }
-.how-arrow { color:#d4694a; font-size:12px; font-weight:700; flex-shrink:0; }
-.diag-scroll { overflow-x:auto; padding:0 3px; }
-.lv-header { display:grid; grid-template-columns:110px repeat(5,1fr); gap:2px; padding:3px 0 0; min-width:700px; }
-.lv-cell { padding:5px 4px; text-align:center; border-radius:2px 2px 0 0; font-size:8px; font-weight:700; }
-.lv-head-cell { background:#1a1a1a; color:#fff; display:flex; align-items:center; justify-content:center; font-size:8px; font-weight:700; }
-.lv1c { background:#e8e0db; color:#555; }
-.lv2c { background:#d4b8a8; color:#442a1a; }
-.lv3c { background:#d4694a; color:#fff; }
-.lv4c { background:#b8402a; color:#fff; }
-.lv5c { background:#1a1a1a; color:#f0c040; border:1.5px solid #f0c040; }
-.lv-name { font-size:10px; font-weight:700; display:block; }
-.lv-sub  { font-size:7px; display:block; margin-top:1px; opacity:0.85; }
-.diag-rows { display:flex; flex-direction:column; gap:2px; min-width:700px; }
-.diag-row { display:grid; grid-template-columns:110px repeat(5,1fr); gap:2px; }
-.diag-cat { background:#1a1a1a; color:#fff; padding:5px 7px; display:flex; align-items:center; gap:4px; }
-.diag-cat-num { background:#d4694a; color:#fff; font-size:8px; font-weight:700; width:15px; height:15px; border-radius:2px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.diag-cat-name { font-size:8px; font-weight:700; line-height:1.3; }
-.diag-cell { background:#fff; border:1px solid #ede8e4; padding:4px 5px; cursor:pointer; transition:all 0.15s; position:relative; }
-.diag-cell:hover { border-color:#d4694a; background:#fdf0ec; }
-.diag-cell.selected { border-color:#d4694a; background:#d4694a; }
-.diag-cell.selected .dc-main { color:#fff; }
-.diag-cell.selected .dc-sub  { color:#ffd0c0; }
-.diag-cell.selected::after { content:'✓'; position:absolute; top:2px; right:4px; color:#fff; font-size:9px; font-weight:700; }
-.diag-cell.lv5c-cell { background:#f8f5e8; border-color:#d4aa30; }
-.diag-cell.lv5c-cell:hover { background:#f0e8c0; border-color:#f0c040; }
-.diag-cell.lv5c-cell.selected { background:#1a1a1a; border-color:#f0c040; }
-.diag-cell.lv5c-cell.selected .dc-main { color:#f0c040; }
-.diag-cell.lv5c-cell.selected::after { color:#f0c040; }
-.dc-main { font-size:8px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.dc-sub  { font-size:7px; color:#999; margin-top:1px; line-height:1.2; }
-.result-panel { margin:0 3px 3px; background:#fff; border-top:3px solid #d4694a; padding:8px 10px; display:flex; align-items:stretch; gap:10px; }
-.rp-left { flex-shrink:0; width:130px; }
-.rp-title { font-size:8px; font-weight:700; color:#888; margin-bottom:4px; }
-.rp-lv-disp { font-size:22px; font-weight:700; color:#d4694a; line-height:1; margin-bottom:2px; }
-.rp-lv-name { font-size:9px; font-weight:700; color:#1a1a1a; margin-bottom:4px; line-height:1.3; }
-.rp-score { font-size:8px; color:#888; }
-.pb-wrap { margin-top:5px; }
-.pb-label { font-size:7.5px; color:#888; margin-bottom:2px; display:flex; justify-content:space-between; }
-.pb-track { height:6px; background:#ede8e4; border-radius:3px; overflow:hidden; }
-.pb-fill { height:100%; background:#d4694a; border-radius:3px; transition:width 0.4s; }
-.rp-mid { flex:1; border-left:1px solid #ede8e4; padding-left:10px; }
-.rp-mid-title { font-size:8px; font-weight:700; color:#888; margin-bottom:5px; }
-.rp-tasks { display:flex; flex-direction:column; gap:3px; }
-.rp-task { display:flex; align-items:flex-start; gap:5px; padding:4px 6px; background:#fdf8f6; border-left:2px solid #d4694a; font-size:8px; font-weight:700; color:#1a1a1a; line-height:1.3; }
-.rp-right { flex-shrink:0; width:170px; border-left:1px solid #ede8e4; padding-left:10px; }
-.rp-right-title { font-size:8px; font-weight:700; color:#888; margin-bottom:5px; }
-.cta-head { background:#d4694a; color:#fff; padding:5px 8px; font-size:9px; font-weight:700; border-radius:2px 2px 0 0; }
-.cta-head.gold { background:#1a1a1a; color:#f0c040; }
-.cta-body { background:#fdf8f6; border:1px solid #d4694a; border-top:none; padding:5px 8px; border-radius:0 0 2px 2px; }
-.cta-body.gold-b { border-color:#d4aa30; background:#f8f5e8; }
-.cta-row { display:flex; justify-content:space-between; align-items:center; padding:2px 0; border-bottom:1px solid #ede8e4; font-size:7.5px; }
-.cta-row:last-child { border-bottom:none; }
-.cta-row-l { color:#666; }
-.cta-row-v { color:#d4694a; font-weight:700; }
-.cta-row-v.gold { color:#b8820a; }
-.lv-guide { margin:0 3px 3px; display:grid; grid-template-columns:repeat(5,1fr); gap:2px; }
-.lg-card { padding:5px 7px; border-radius:2px; border-top:2px solid; }
-.lg-l1 { background:#f5f2f0; border-color:#b0a8a0; }
-.lg-l2 { background:#f5ede8; border-color:#d4b8a8; }
-.lg-l3 { background:#fdf0ec; border-color:#d4694a; }
-.lg-l4 { background:#f5e0d8; border-color:#b8402a; }
-.lg-l5 { background:#1a1a1a; border-color:#f0c040; }
-.lg-title { font-size:8px; font-weight:700; color:#1a1a1a; margin-bottom:2px; }
-.lg-l5 .lg-title { color:#f0c040; }
-.lg-desc  { font-size:7px; color:#666; line-height:1.3; }
-.lg-l5 .lg-desc { color:#aaa; }
-.lg-price { font-size:7px; font-weight:700; color:#d4694a; margin-top:3px; padding-top:2px; border-top:1px solid #ede8e4; line-height:1.4; }
-.lg-l5 .lg-price { color:#f0c040; border-color:#444; }
-</style>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ことばアカデミー｜ツール③ 日本語レベル簡易診断</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-</head><body><div class="poster"><div class="hdr"><div class="hdr-stripe"></div><div class="hdr-inner"><div class="logo-wrap"><img src="data:image/png;base64,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" style="width:40px;height:40px;object-fit:contain;display:block;" alt="logo"></div><div class="hdr-text"><div class="hdr-badge">セミナー参加者限定　ツール③</div><div class="hdr-title">日本語レベル<em>簡易診断</em>（判定シート）</div><div class="hdr-sub">〜 5段階で「今どこにいるか」を把握し、次の教育ステップを決める 〜</div></div></div></div><div class="how-bar"><div class="how-step"><div class="how-num">1</div><div class="how-txt">診断したい外国人材を<br>1名選んでください</div></div><div class="how-arrow">▶</div><div class="how-step"><div class="how-num">2</div><div class="how-txt">各カテゴリで<strong style="color:#d4694a">最も近いレベル</strong>の<br>セルをクリック</div></div><div class="how-arrow">▶</div><div class="how-step"><div class="how-num">3</div><div class="how-txt">下の診断結果に<br>推奨コースが表示されます</div></div><div class="how-arrow">▶</div><div class="how-step"><div class="how-num">4</div><div class="how-txt">職長・担当者と共有して<br>教育プランを決定</div></div></div><div class="diag-scroll"><div class="lv-header"><div class="lv-cell lv-head-cell">評価カテゴリ</div><div class="lv-cell lv1c"><span class="lv-name">レベル１</span><span class="lv-sub">入門</span></div><div class="lv-cell lv2c"><span class="lv-name">レベル２</span><span class="lv-sub">基礎</span></div><div class="lv-cell lv3c"><span class="lv-name">レベル３</span><span class="lv-sub">現場対応</span></div><div class="lv-cell lv4c"><span class="lv-name">レベル４</span><span class="lv-sub">業務自立</span></div><div class="lv-cell lv5c"><span class="lv-name">レベル５</span><span class="lv-sub">★リーダー級</span></div></div><div class="diag-rows"><div class="diag-row"><div class="diag-cat"><div class="diag-cat-num">1</div><div class="diag-cat-name">挨拶・<br>基本会話</div></div><div class="diag-cell" onclick="selectCell(this,1,1)"><div class="dc-main">「おはようございます」など挨拶のみ可能</div><div class="dc-sub">自己紹介は覚えた文のみ</div></div><div class="diag-cell" onclick="selectCell(this,1,2)"><div class="dc-main">名前・国籍・仕事を簡単に伝えられる</div><div class="dc-sub">はい／いいえで答えられる</div></div><div class="diag-cell" onclick="selectCell(this,1,3)"><div class="dc-main">朝礼・昼休みの雑談に参加できる</div><div class="dc-sub">簡単な質問に自分の言葉で答えられる</div></div><div class="diag-cell" onclick="selectCell(this,1,4)"><div class="dc-main">体調・困りごとを自分から報告できる</div><div class="dc-sub">電話での簡単なやりとりも可能</div></div><div class="diag-cell lv5c-cell" onclick="selectCell(this,1,5)"><div class="dc-main">新人に話しかけ、関係を自ら作れる</div><div class="dc-sub">日本人と自然に雑談・冗談も言える</div></div></div><div class="diag-row"><div class="diag-cat"><div class="diag-cat-num">2</div><div class="diag-cat-name">作業指示の<br>理解</div></div><div class="diag-cell" onclick="selectCell(this,2,1)"><div class="dc-main">ジェスチャー・実演がないと理解できない</div><div class="dc-sub">単語レベルで辛うじて理解</div></div><div class="diag-cell" onclick="selectCell(this,2,2)"><div class="dc-main">簡単な動詞（持って・置いて）は理解できる</div><div class="dc-sub">数字・場所の指示は聞き取れる</div></div><div class="diag-cell" onclick="selectCell(this,2,3)"><div class="dc-main">複数工程の指示をメモしながら実行できる</div><div class="dc-sub">「もう一度お願いします」と言える</div></div><div class="diag-cell" onclick="selectCell(this,2,4)"><div class="dc-main">口頭指示のみで段取りを組んで動ける</div><div class="dc-sub">急な変更指示にも対応できる</div></div><div class="diag-cell lv5c-cell" onclick="selectCell(this,2,5)"><div class="dc-main">指示を聞いて後輩に伝え直せる</div><div class="dc-sub">不明点を自ら確認・判断して動ける</div></div></div><div class="diag-row"><div class="diag-cat"><div class="diag-cat-num">3</div><div class="diag-cat-name">読み書き</div></div><div class="diag-cell" onclick="selectCell(this,3,1)"><div class="dc-main">ひらがな・カタカナが読めない</div><div class="dc-sub">自分の名前をひらがなで書けない</div></div><div class="diag-cell" onclick="selectCell(this,3,2)"><div class="dc-main">ひらがな・カタカナは読み書きできる</div><div class="dc-sub">簡単な漢字（数字・曜日）は読める</div></div><div class="diag-cell" onclick="selectCell(this,3,3)"><div class="dc-main">作業日報・連絡ノートに記入できる</div><div class="dc-sub">安全掲示板の内容をおおむね読める</div></div><div class="diag-cell" onclick="selectCell(this,3,4)"><div class="dc-main">図面のメモ書きや注意事項を読める</div><div class="dc-sub">LINEで業務連絡のやりとりができる</div></div><div class="diag-cell lv5c-cell" onclick="selectCell(this,3,5)"><div class="dc-main">報告書・施工記録をほぼ独力で書ける</div><div class="dc-sub">契約書・仕様書の要点を理解できる</div></div></div><div class="diag-row"><div class="diag-cat"><div class="diag-cat-num">4</div><div class="diag-cat-name">安全・<br>緊急対応</div></div><div class="diag-cell" onclick="selectCell(this,4,1)"><div class="dc-main">「危ない」「止まれ」などの言葉を知らない</div><div class="dc-sub">緊急時に何も言えない状態</div></div><div class="diag-cell" onclick="selectCell(this,4,2)"><div class="dc-main">基本的な危険語彙を知っている</div><div class="dc-sub">「助けてください」と言える</div></div><div class="diag-cell" onclick="selectCell(this,4,3)"><div class="dc-main">ヒヤリハットを日本語で報告できる</div><div class="dc-sub">KYK（危険予知活動）に参加できる</div></div><div class="diag-cell" onclick="selectCell(this,4,4)"><div class="dc-main">事故発生時に状況を説明して通報できる</div><div class="dc-sub">安全ミーティングで発言できる</div></div><div class="diag-cell lv5c-cell" onclick="selectCell(this,4,5)"><div class="dc-main">後輩への安全指導を日本語でできる</div><div class="dc-sub">危険を発見して職長に提言できる</div></div></div><div class="diag-row"><div class="diag-cat"><div class="diag-cat-num">5</div><div class="diag-cat-name">報連相・<br>チームワーク</div></div><div class="diag-cell" onclick="selectCell(this,5,1)"><div class="dc-main">問題が起きても誰にも言えない</div><div class="dc-sub">黙って作業を続けてしまう</div></div><div class="diag-cell" onclick="selectCell(this,5,2)"><div class="dc-main">「できません」「わかりません」と言える</div><div class="dc-sub">完了したら身振りで伝えられる</div></div><div class="diag-cell" onclick="selectCell(this,5,3)"><div class="dc-main">「〜が終わりました」と口頭で報告できる</div><div class="dc-sub">困ったとき職長に声をかけられる</div></div><div class="diag-cell" onclick="selectCell(this,5,4)"><div class="dc-main">進捗・問題を自分から報連相できる</div><div class="dc-sub">他メンバーへの手伝い申し出もできる</div></div><div class="diag-cell lv5c-cell" onclick="selectCell(this,5,5)"><div class="dc-main">チーム全体への周知・情報共有ができる</div><div class="dc-sub">後輩の報連相を促す声がけができる</div></div></div><div class="diag-row"><div class="diag-cat"><div class="diag-cat-num">6</div><div class="diag-cat-name">敬語・<br>職場マナー</div></div><div class="diag-cell" onclick="selectCell(this,6,1)"><div class="dc-main">敬語・丁寧語の概念がない</div><div class="dc-sub">上司と同僚に同じ話し方をする</div></div><div class="diag-cell" onclick="selectCell(this,6,2)"><div class="dc-main">「ありがとうございます」が言える</div><div class="dc-sub">上司には丁寧に話そうとする意識がある</div></div><div class="diag-cell" onclick="selectCell(this,6,3)"><div class="dc-main">場面に応じた基本的な敬語を使い分けられる</div><div class="dc-sub">お客様対応で挨拶・お辞儀ができる</div></div><div class="diag-cell" onclick="selectCell(this,6,4)"><div class="dc-main">取引先との電話・対面で失礼のない対応ができる</div><div class="dc-sub">断り方・お願いの仕方を知っている</div></div><div class="diag-cell lv5c-cell" onclick="selectCell(this,6,5)"><div class="dc-main">職場マナーを後輩に教えられる</div><div class="dc-sub">ビジネス文書の読み書きも大体できる</div></div></div></div></div><div class="result-panel"><div class="rp-left"><div class="rp-title">📊 診断結果</div><div class="rp-lv-disp" id="rLv">－</div><div class="rp-lv-name" id="rName">カテゴリを選択してください</div><div class="rp-score" id="rScore">選択済み：0 / 6</div><div class="pb-wrap"><div class="pb-label"><span>診断進捗</span><span id="rPct">0%</span></div><div class="pb-track"><div class="pb-fill" id="rFill" style="width:0%"></div></div></div></div><div class="rp-mid"><div class="rp-mid-title">📋 推奨される次の教育ステップ</div><div class="rp-tasks" id="rTasks"><div class="rp-task">💡 すべてのカテゴリを選択すると教育プランが表示されます</div></div></div><div class="rp-right"><div class="rp-right-title">🏫 吉岡ことばアカデミー 推奨コース</div><div class="academy-cta" id="rCta"><div class="cta-head">診断中…</div><div class="cta-body"><div class="cta-row"><span class="cta-row-l">全カテゴリを選択すると</span></div><div class="cta-row"><span class="cta-row-l">最適コースが表示されます</span></div></div></div></div></div><div class="lv-guide"><div class="lg-card lg-l1"><div class="lg-title">レベル１｜入門</div><div class="lg-desc">来日直後。まず危険語彙・挨拶など現場で生き延びる最低限の語彙が必要。</div><div class="lg-price">▶ 基本サービス 週1回<br>25,000円／月（50分授業）</div></div><div class="lg-card lg-l2"><div class="lg-title">レベル２｜基礎</div><div class="lg-desc">文字は読める。単語は理解できる。しかし作業指示はまだジェスチャー頼り。</div><div class="lg-price">▶ 基本サービス 週1〜2回<br>25,000〜48,000円／月</div></div><div class="lg-card lg-l3"><div class="lg-title">レベル３｜現場対応</div><div class="lg-desc">日常会話は通じる。指示もおおむね理解できる。報連相と安全語彙を強化。</div><div class="lg-price">▶ 基本サービス 週2回<br>48,000円／月（50分授業）</div></div><div class="lg-card lg-l4"><div class="lg-title">レベル４｜業務自立</div><div class="lg-desc">ほぼ自立して働ける。N3以上が目安。特定技能2号を目指す段階へ。</div><div class="lg-price">▶ 特定技能特化サービス<br>60,000円／月（90分授業）</div></div><div class="lg-card lg-l5"><div class="lg-title">レベル５｜★リーダー級</div><div class="lg-desc">後輩指導・取引先対応も可能。「橋渡し役」として現場を動かせる人材。</div><div class="lg-price">▶ 訪問型・個別カスタマイズ<br>9,000円／回〜 完全オーダーメイド</div></div></div><div class="ftr"><div class="ftr-logo-wrap"><img src="data:image/png;base64,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" style="width:32px;height:32px;object-fit:contain;display:block;" alt="logo"></div><div class="ftr-msg">ことばアカデミーからのメッセージ<br><strong>「今どこにいるか」がわかれば、「次に何をすべきか」が見えてきます。</strong></div><div class="ftr-brand"><div class="ftr-brand-name">吉岡ことばアカデミー</div><div class="ftr-brand-tag">建設業に育成と教育の文化を</div></div></div><script>
-const _sel = {};
-
-function selectCell(cell, cat, lv) {
-  try {
-    // 同じ行のセルの選択を解除
-    const row = cell.closest('.diag-row');
-    if (row) {
-      row.querySelectorAll('.diag-cell').forEach(function(c) {
-        c.classList.remove('selected');
-      });
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f8f9fa;
+      color: #2c2c2c;
+      font-size: 15px;
+      line-height: 1.6;
     }
-    // このセルを選択
-    cell.classList.add('selected');
-    _sel[cat] = lv;
-    _update3();
-  } catch(e) {
-    console.error('selectCell error:', e);
-  }
+
+    .header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a0 100%);
+      color: white;
+      padding: 20px 16px 24px;
+      text-align: center;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .header h1 { font-size: 18px; font-weight: 700; line-height: 1.45; margin-bottom: 6px; }
+    .header .subtitle { font-size: 12px; opacity: 0.8; line-height: 1.5; }
+
+    /* 被評価者入力 */
+    .input-section {
+      background: white;
+      padding: 16px;
+      border-bottom: 1px solid #eee;
+    }
+    .input-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+    .input-field {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    .input-field:focus { border-color: #2563a0; }
+
+    /* カテゴリタブ */
+    .tab-bar {
+      background: white;
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 2px solid #e9ecef;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      border: none;
+      background: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+    }
+    .tab-btn.active { color: #1a3a5c; border-bottom-color: #1a3a5c; }
+
+    /* 進捗 */
+    .progress-bar {
+      background: white;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .progress-fill-wrap {
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563a0, #34c47c);
+      border-radius: 3px;
+      transition: width 0.3s;
+      width: 0%;
+    }
+
+    /* 質問カード */
+    .questions {
+      padding: 12px 12px 24px;
+    }
+    .category-panel {
+      display: none;
+    }
+    .category-panel.active {
+      display: block;
+    }
+    .cat-desc {
+      background: #f0f5ff;
+      border-left: 4px solid #2563a0;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .q-card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .q-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c2c2c;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .q-num {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+    .rating-row {
+      display: flex;
+      gap: 6px;
+    }
+    .rating-btn {
+      flex: 1;
+      padding: 10px 4px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      background: white;
+      font-size: 13px;
+      font-weight: 700;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .rating-btn.sel-1 { background: #fff0f0; border-color: #e53e3e; color: #e53e3e; }
+    .rating-btn.sel-2 { background: #fff8e1; border-color: #d97706; color: #d97706; }
+    .rating-btn.sel-3 { background: #fffde7; border-color: #c2a500; color: #c2a500; }
+    .rating-btn.sel-4 { background: #f0fff6; border-color: #22863a; color: #22863a; }
+    .rating-btn.sel-5 { background: #e8f5e9; border-color: #1a7335; color: #1a7335; }
+    .rating-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #aaa;
+      margin-top: 4px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .nav-prev { background: #f0f0f0; color: #666; }
+    .nav-next { background: #1a3a5c; color: white; }
+
+    /* 結果 */
+    .result-section {
+      display: none;
+      padding: 12px;
+    }
+    .result-section.show { display: block; }
+
+    .level-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .level-label { font-size: 12px; color: #888; margin-bottom: 8px; }
+    .level-badge {
+      display: inline-block;
+      font-size: 28px;
+      font-weight: 900;
+      padding: 8px 24px;
+      border-radius: 40px;
+      margin-bottom: 10px;
+    }
+    .level-name { font-size: 16px; font-weight: 700; color: #1a3a5c; margin-bottom: 6px; }
+    .level-desc { font-size: 13px; color: #666; line-height: 1.6; }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .score-item {
+      background: white;
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .score-num { font-size: 22px; font-weight: 800; color: #1a3a5c; }
+    .score-label { font-size: 10px; color: #888; margin-top: 2px; }
+
+    .recommend-box {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .recommend-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .recommend-item {
+      padding: 10px 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #2c2c2c;
+      margin-bottom: 8px;
+      line-height: 1.5;
+      border-left: 3px solid #2563a0;
+    }
+
+    .reset-btn {
+      width: 100%;
+      padding: 12px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+
+    .footer {
+      background: #1a3a5c;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+    .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px; }
+
+    @media print {
+      .tab-bar, .nav-buttons, .reset-btn { display: none; }
+      .category-panel { display: block !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">セミナー参加者限定 ツール③</div>
+  <h1>日本語レベル<em style="font-style:normal;color:#7dd3fc;">簡易診断</em><br>（判定シート）</h1>
+  <p class="subtitle">6カテゴリで「今どこにいるか」を把握<br>推奨コースも表示されます</p>
+</div>
+
+<div class="input-section">
+  <div class="input-label">被評価者のお名前（任意）</div>
+  <input class="input-field" type="text" id="workerName" placeholder="例：グエン・ヴァン・アン">
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" onclick="showCat(0, this)">聴く</button>
+  <button class="tab-btn" onclick="showCat(1, this)">話す</button>
+  <button class="tab-btn" onclick="showCat(2, this)">読む</button>
+  <button class="tab-btn" onclick="showCat(3, this)">書く</button>
+  <button class="tab-btn" onclick="showCat(4, this)">語彙</button>
+  <button class="tab-btn" onclick="showCat(5, this)">現場語</button>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-text">
+    <span id="progressLabel">回答済み 0 / 18問</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-fill-wrap">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<div class="questions" id="questionsArea">
+
+  <!-- カテゴリ0: 聴く -->
+  <div class="category-panel active" data-cat="0">
+    <div class="cat-desc">日常的な指示・会話を<strong>「聴いて」理解できるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q1 / 聴く</div>
+      <div class="q-text">「今日の作業は、この図面の通りに屋根の板金を取り付けてください」という指示を聞いて、何をすべきか理解できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="0-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="0-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="0-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="0-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="0-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼ理解できない</span><span>完全に理解できる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q2 / 聴く</div>
+      <div class="q-text">「○○が終わったら○○してください」という2ステップ以上の指示を聞いて、順番通りに実行できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="0-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="0-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="0-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="0-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="0-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼ理解できない</span><span>完全に理解できる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q3 / 聴く</div>
+      <div class="q-text">「今日は早く終わりそうだから、残りは明日でいいよ」などの状況に応じた変更指示を聞いて理解できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="0-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="0-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="0-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="0-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="0-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼ理解できない</span><span>完全に理解できる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ1: 話す -->
+  <div class="category-panel" data-cat="1">
+    <div class="cat-desc">自分の考えや状況を<strong>「話して」伝えられるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q4 / 話す</div>
+      <div class="q-text">「わかりません」「もう一度言ってください」を日本語で言える</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="1-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="1-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="1-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="1-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="1-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>言えない</span><span>自然に言える</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q5 / 話す</div>
+      <div class="q-text">作業中に異常・トラブルを発見したとき、上司に日本語で報告できる（「○○が壊れています」「これはどうすればいいですか？」など）</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="1-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="1-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="1-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="1-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="1-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全く言えない</span><span>流暢に伝えられる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q6 / 話す</div>
+      <div class="q-text">「昨日やった作業はどうだったか、うまくいったか」を日本語で話せる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="1-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="1-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="1-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="1-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="1-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>言えない</span><span>流暢に話せる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ2: 読む -->
+  <div class="category-panel" data-cat="2">
+    <div class="cat-desc">ひらがな・カタカナ・漢字を<strong>「読んで」理解できるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q7 / 読む</div>
+      <div class="q-text">ひらがな・カタカナで書かれた掲示（「きんえん」「とりあつかいちゅうい」など）を読んで意味がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="2-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="2-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="2-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="2-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="2-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>読めない</span><span>すぐ読める</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q8 / 読む</div>
+      <div class="q-text">日付・数字・単位（㎜・㎏・本・枚など）を含んだ作業指示書を読んで理解できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="2-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="2-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="2-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="2-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="2-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>読めない</span><span>完全に理解できる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q9 / 読む</div>
+      <div class="q-text">安全マニュアルや手順書（漢字含む）を読んで、1人で作業手順を把握できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="2-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="2-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="2-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="2-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="2-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>読めない</span><span>1人で理解できる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ3: 書く -->
+  <div class="category-panel" data-cat="3">
+    <div class="cat-desc">日本語を<strong>「書いて」伝えられるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q10 / 書く</div>
+      <div class="q-text">自分の名前をひらがな・カタカナで書ける</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="3-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="3-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="3-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="3-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="3-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>書けない</span><span>問題なく書ける</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q11 / 書く</div>
+      <div class="q-text">作業日報（日付・作業内容・時間・気づいたこと）を日本語で記入できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="3-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="3-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="3-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="3-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="3-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全く書けない</span><span>問題なく書ける</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q12 / 書く</div>
+      <div class="q-text">LINEやメモアプリで、上司への簡単な連絡文を日本語で書ける</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="3-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="3-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="3-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="3-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="3-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全く書けない</span><span>自然に書ける</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ4: 語彙 -->
+  <div class="category-panel" data-cat="4">
+    <div class="cat-desc">日常・職場で使われる<strong>語彙を知っているか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q13 / 語彙</div>
+      <div class="q-text">数字・日付・曜日・時刻を日本語で言える・聞いてわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="4-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="4-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="4-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="4-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="4-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼわからない</span><span>完全にわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q14 / 語彙</div>
+      <div class="q-text">「右・左・上・下・前・後ろ」「大きい・小さい・長い・短い」などの方向・形容詞がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="4-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="4-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="4-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="4-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="4-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼわからない</span><span>完全にわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q15 / 語彙</div>
+      <div class="q-text">「締める・開ける・取り付ける・外す・押す・引く・持ち上げる」などの動作語がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="4-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="4-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="4-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="4-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="4-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼわからない</span><span>完全にわかる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ5: 現場語 -->
+  <div class="category-panel" data-cat="5">
+    <div class="cat-desc">板金・建設現場で使われる<strong>専門用語・現場語</strong>の理解度を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q16 / 現場語</div>
+      <div class="q-text">「養生・段取り・墨出し・バリ取り」などの現場用語の意味がわかる（全4語）</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="5-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="5-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="5-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="5-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="5-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>1語もわからない</span><span>4語全てわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q17 / 現場語</div>
+      <div class="q-text">「ヒヤリハット」「KY活動」「ゼロ災」などの安全用語の意味がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="5-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="5-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="5-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="5-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="5-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>1語もわからない</span><span>全てわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q18 / 現場語</div>
+      <div class="q-text">「ホウレンソウ（報連相）」「OJT」「段取り八分」などのビジネス用語・慣用語がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="5-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="5-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="5-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="5-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="5-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全くわからない</span><span>全てわかる</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-buttons">
+  <button class="nav-btn nav-prev" id="prevBtn" onclick="navigate(-1)">← 前へ</button>
+  <button class="nav-btn nav-next" id="nextBtn" onclick="navigate(1)">次へ →</button>
+</div>
+
+<!-- 結果セクション -->
+<div class="result-section" id="resultSection">
+  <div class="level-card" id="levelCard">
+    <div class="level-label">総合日本語レベル</div>
+    <div class="level-badge" id="levelBadge">--</div>
+    <div class="level-name" id="levelName">診断中...</div>
+    <div class="level-desc" id="levelDesc"></div>
+  </div>
+
+  <div class="score-grid" id="scoreGrid"></div>
+
+  <div class="recommend-box">
+    <div class="recommend-title">📚 推奨コース・アクション</div>
+    <div id="recommendList"></div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">🔄 もう一度診断する</button>
+</div>
+
+<div class="footer">
+  <div style="color:white;font-weight:700;font-size:13px;margin-bottom:4px;">吉岡ことばアカデミー</div>
+  <div>外国人材の定着・育成をサポート</div>
+  <div class="footer-links">
+    <a href="index.html">← 特典一覧に戻る</a>
+  </div>
+</div>
+
+<script>
+const CATS = ['聴く', '話す', '読む', '書く', '語彙', '現場語'];
+let currentCat = 0;
+const answers = {};
+
+function rate(btn) {
+  const q = btn.dataset.q;
+  const v = parseInt(btn.dataset.v);
+  const row = btn.parentElement;
+
+  row.querySelectorAll('.rating-btn').forEach(b => {
+    b.className = 'rating-btn';
+  });
+  btn.classList.add('sel-' + v);
+  answers[q] = v;
+  updateProgress();
 }
 
-function _update3() {
-  var keys = Object.keys(_sel);
-  var cnt = keys.length;
-  var pct = Math.round(cnt / 6 * 100);
+function updateProgress() {
+  const total = 18;
+  const done = Object.keys(answers).length;
+  document.getElementById('progressLabel').textContent = `回答済み ${done} / ${total}問`;
+  document.getElementById('progressPct').textContent = Math.round(done / total * 100) + '%';
+  document.getElementById('progressFill').style.width = (done / total * 100) + '%';
+}
 
-  var fillEl = document.getElementById('rFill');
-  var pctEl = document.getElementById('rPct');
-  var scoreEl = document.getElementById('rScore');
-  var lvEl = document.getElementById('rLv');
-  var nameEl = document.getElementById('rName');
-  var tasksEl = document.getElementById('rTasks');
-  var ctaEl = document.getElementById('rCta');
+function showCat(idx, btn) {
+  currentCat = idx;
+  document.querySelectorAll('.category-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
 
-  if (fillEl) fillEl.style.width = pct + '%';
-  if (pctEl) pctEl.textContent = pct + '%';
-  if (scoreEl) scoreEl.textContent = '選択済み：' + cnt + ' / 6';
+  const isLast = idx === 5;
+  document.getElementById('nextBtn').textContent = isLast ? '診断結果を見る ▶' : '次へ →';
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('prevBtn').style.opacity = idx === 0 ? '0.4' : '1';
+}
 
-  if (cnt === 0) return;
-
-  var avg = Math.round(keys.reduce(function(s, k) { return s + _sel[k]; }, 0) / cnt);
-  var names = ['', 'Lv.1｜入門', 'Lv.2｜基礎', 'Lv.3｜現場対応', 'Lv.4｜業務自立', 'Lv.5｜★リーダー級'];
-
-  if (lvEl) {
-    lvEl.textContent = 'Lv.' + avg;
-    lvEl.style.color = (avg === 5) ? '#f0c040' : '#d4694a';
-  }
-  if (nameEl) nameEl.textContent = names[avg] || '';
-
-  if (cnt < 6) {
-    if (tasksEl) tasksEl.innerHTML = '<div class="rp-task">⏳ 残り' + (6 - cnt) + 'カテゴリを選択すると確定します</div>';
-    if (ctaEl) ctaEl.innerHTML = '<div class="cta-head">診断中（' + cnt + '/6）</div><div class="cta-body"><div class="cta-row"><span class="cta-row-l">全カテゴリを選択すると表示されます</span></div></div>';
+function navigate(dir) {
+  const next = currentCat + dir;
+  if (next < 0) return;
+  if (next > 5) {
+    showResult();
     return;
   }
-
-  var TASKS = {
-    1: ['📌 安全語彙（危ない・止まれ）を最初の1週間で徹底暗記', '📌 ひらがな・カタカナの読み書きを毎日10分練習', '📌 「わかりません」「もう一度お願いします」を必ず言えるようにする'],
-    2: ['📌 現場で使う動詞20語を写真付きカードで学習', '📌 数字・寸法・色の日本語を優先して覚える', '📌 作業指示を復唱して確認する習慣をつける'],
-    3: ['📌 報連相フレーズ集（〜が終わりました）を暗記', '📌 作業日報への記入を習慣化する', '📌 KYK（危険予知活動）への参加を義務化する'],
-    4: ['📌 特定技能2号の試験範囲を体系的に学習', '📌 敬語の基本3形をロールプレイ練習', '📌 図面・施工記録の読み書きを週1回実施'],
-    5: ['📌 後輩への指示出し・安全指導を実践トレーニング', '📌 社内会議・朝礼でのファシリテーション体験', '📌 訪問型授業で現場特有の場面を想定した完全カスタマイズ学習']
-  };
-
-  var COURSES = {
-    1: { head: '🔰 基本サービス 週1回スタート', gold: false, rows: [['授業形式', '対面またはZOOM（50分）'], ['頻度', '週1回'], ['料金', '25,000円／月'], ['期間目安', '最低半年（24回）'], ['入会金', '30,000円（初回のみ）']] },
-    2: { head: '📗 基本サービス 週1〜2回', gold: false, rows: [['授業形式', '対面またはZOOM（50分）'], ['頻度', '週1〜2回'], ['料金', '25,000〜48,000円／月'], ['期間目安', '最低半年（24回〜）'], ['初回レベルチェック', '5,000円／人']] },
-    3: { head: '🔧 基本サービス 週2回強化', gold: false, rows: [['授業形式', '対面またはZOOM（50分）'], ['頻度', '週2回'], ['料金', '48,000円／月'], ['期間目安', '継続型（半年以上推奨）'], ['訪問型オプション', '9,000円／回']] },
-    4: { head: '💼 特定技能特化（2号向け）', gold: false, rows: [['授業形式', '対面またはZOOM（90分）'], ['頻度', '週1回'], ['料金', '60,000円／月'], ['課題採点', '5,000円／回'], ['カリキュラム作成', '20,000円（初回）']] },
-    5: { head: '★ 訪問型・個別カスタマイズ', gold: true, rows: [['授業形式', '現場訪問型（完全個別対応）'], ['料金', '9,000円／回（交通費別）'], ['カリキュラム', '完全オーダーメイド'], ['対象', 'リーダー・橋渡し役育成'], ['お問合せ', '076-425-8774']] }
-  };
-
-  var minLv = Math.min.apply(null, keys.map(function(k) { return _sel[k]; }));
-  var tasks = TASKS[minLv] || TASKS[3];
-  if (tasksEl) tasksEl.innerHTML = tasks.map(function(t) { return '<div class="rp-task">' + t + '</div>'; }).join('');
-
-  var course = COURSES[avg] || COURSES[3];
-  var hc = course.gold ? 'cta-head gold' : 'cta-head';
-  var bc = course.gold ? 'cta-body gold-b' : 'cta-body';
-  var vc = course.gold ? 'cta-row-v gold' : 'cta-row-v';
-  var rows = course.rows.map(function(r) {
-    return '<div class="cta-row"><span class="cta-row-l">' + r[0] + '</span><span class="' + vc + '">' + r[1] + '</span></div>';
-  }).join('');
-  if (ctaEl) ctaEl.innerHTML = '<div class="' + hc + '">' + course.head + '</div><div class="' + bc + '">' + rows + '</div>';
+  const tabs = document.querySelectorAll('.tab-btn');
+  showCat(next, tabs[next]);
+  tabs[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  window.scrollTo(0, 0);
 }
-</script></div></body></html>
+
+function getCatScore(catIdx) {
+  const keys = [`${catIdx}-0`, `${catIdx}-1`, `${catIdx}-2`];
+  const scores = keys.map(k => answers[k] || 0);
+  const filled = scores.filter(s => s > 0).length;
+  const sum = scores.reduce((a, b) => a + b, 0);
+  return filled > 0 ? sum / filled : 0;
+}
+
+function showResult() {
+  document.getElementById('questionsArea').style.display = 'none';
+  document.querySelectorAll('.tab-bar, .nav-buttons, .progress-bar').forEach(e => e.style.display = 'none');
+  document.getElementById('resultSection').classList.add('show');
+
+  const catScores = CATS.map((_, i) => getCatScore(i));
+  const avg = catScores.reduce((a, b) => a + b, 0) / catScores.filter(s => s > 0).length || 0;
+
+  let level, levelColor, levelName, levelDesc, recommends;
+
+  if (avg < 1.5) {
+    level = 'N5以下'; levelColor = '#fee2e2'; levelName = '入門レベル — 基礎から学習が必要';
+    levelDesc = '日常的な短い指示も理解が難しい段階です。ひらがな・カタカナから丁寧に学習を始める必要があります。';
+    recommends = [
+      '【緊急】吉岡ことばアカデミー「ゼロ初級コース」受講を推奨',
+      '現場では必ず母国語のわかる人の補助をつける',
+      'ひらがな・カタカナの読み書き練習（週5日15分〜）',
+      '翻訳アプリ（DeepL等）の使い方を習得させる'
+    ];
+  } else if (avg < 2.5) {
+    level = 'N4〜N5'; levelColor = '#fef3c7'; levelName = '初級レベル — 基本的な学習が必要';
+    levelDesc = '簡単な言葉や日常的な表現は理解できますが、職場での会話にはまだサポートが必要な段階です。';
+    recommends = [
+      '吉岡ことばアカデミー「初級コース」（生活日本語 + 職場日本語）',
+      '1対1の現場日本語練習を週2〜3回実施',
+      '日常会話の練習：挨拶・報告・質問の3フレーズを毎日練習',
+      '手順書にふりがなをつける・絵や写真で補足する'
+    ];
+  } else if (avg < 3.5) {
+    level = 'N3〜N4'; levelColor = '#fef9c3'; levelName = '中初級レベル — 実用化に向けて継続学習';
+    levelDesc = '基本的な指示や報告はできますが、職場での柔軟な会話にはまだ練習が必要な段階です。';
+    recommends = [
+      '吉岡ことばアカデミー「中級実践コース」（現場日本語 + ビジネス語彙）',
+      '弱点カテゴリ（スコアが低い分野）を集中して練習',
+      '週1回の振り返り面談（日本語でのコミュニケーション機会）',
+      '現場語・業界用語の言い換えカード（ツール②）を活用'
+    ];
+  } else if (avg < 4.5) {
+    level = 'N3'; levelColor = '#d1fae5'; levelName = '中級レベル — 自立した業務に近い水準';
+    levelDesc = '日常的な業務はほぼこなせますが、さらなる語彙力と表現の幅を広げることで、職場の主要メンバーになれます。';
+    recommends = [
+      '吉岡ことばアカデミー「N3準備コース」または「職場リーダー語彙コース」',
+      '他の外国人材への通訳サポートを経験として積む',
+      '日本語での提案・意見表明（会議・朝礼での発言）を経験させる',
+      '資格取得（JLPT N3）へのチャレンジを推奨'
+    ];
+  } else {
+    level = 'N2以上'; levelColor = '#bbf7d0'; levelName = '上級レベル — 職場の中核として活躍できる水準';
+    levelDesc = 'ほぼすべての職場場面で日本語を使って自立的に仕事ができます。次のステップとしてリーダー・通訳役を担える水準です。';
+    recommends = [
+      'JLPT N2・N1へのチャレンジを推奨',
+      '後輩外国人材のサポーターとしての役割を付与する',
+      '職場内通訳・多文化チームのリーダー候補として育成',
+      '吉岡ことばアカデミー「上級ビジネス日本語コース」（任意）'
+    ];
+  }
+
+  document.getElementById('levelBadge').textContent = level;
+  document.getElementById('levelBadge').style.background = levelColor;
+  document.getElementById('levelBadge').style.color = '#1a3a5c';
+  document.getElementById('levelName').textContent = levelName;
+  document.getElementById('levelDesc').textContent = levelDesc;
+
+  // カテゴリスコア表示
+  const grid = document.getElementById('scoreGrid');
+  grid.innerHTML = CATS.map((cat, i) => {
+    const s = catScores[i];
+    const pct = s > 0 ? Math.round(s / 5 * 100) : 0;
+    return `<div class="score-item">
+      <div class="score-num">${pct > 0 ? pct + '%' : '--'}</div>
+      <div class="score-label">${cat}</div>
+    </div>`;
+  }).join('');
+
+  // 推奨リスト
+  document.getElementById('recommendList').innerHTML =
+    recommends.map(r => `<div class="recommend-item">${r}</div>`).join('');
+
+  window.scrollTo(0, 0);
+}
+
+function resetAll() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.rating-btn').forEach(b => b.className = 'rating-btn');
+  document.getElementById('questionsArea').style.display = '';
+  document.querySelectorAll('.tab-bar, .nav-buttons, .progress-bar').forEach(e => e.style.display = '');
+  document.getElementById('resultSection').classList.remove('show');
+  showCat(0, document.querySelectorAll('.tab-btn')[0]);
+  updateProgress();
+  window.scrollTo(0, 0);
+}
+
+// 初期化
+showCat(0, document.querySelectorAll('.tab-btn')[0]);
+document.getElementById('prevBtn').style.opacity = '0.4';
+</script>
+</body>
+</html>
