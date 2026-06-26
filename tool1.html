@@ -1,1 +1,768 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ことばアカデミー｜ツール① 外国人材が辞める本当の理由チェックリスト</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f8f9fa;
+      color: #2c2c2c;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    /* ヘッダー */
+    .header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a0 100%);
+      color: white;
+      padding: 20px 16px 24px;
+      text-align: center;
+    }
+    .header img { height: 48px; margin-bottom: 12px; }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+    .header .tool-num {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+    .header .subtitle {
+      font-size: 12px;
+      opacity: 0.75;
+      line-height: 1.5;
+    }
+
+    /* カウンター */
+    .counter-bar {
+      background: white;
+      border-bottom: 2px solid #e9ecef;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .counter-label { font-size: 13px; color: #666; flex: 1; }
+    .counter-num {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1a3a5c;
+      line-height: 1;
+    }
+    .counter-total { font-size: 13px; color: #999; }
+    .progress-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563a0, #34c47c);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+      width: 0%;
+    }
+
+    /* セクション */
+    .section {
+      margin: 16px 12px 0;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .section-header {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .section-letter {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: #1a3a5c;
+      color: white;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-title { font-size: 14px; font-weight: 700; color: #1a3a5c; }
+    .section-count { margin-left: auto; font-size: 12px; color: #999; white-space: nowrap; }
+
+    /* チェック項目 */
+    .check-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f5f5f5;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .check-item:last-child { border-bottom: none; }
+    .check-item:active { background: #f0f5ff; }
+    .check-item.checked { background: #f0fff6; }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .check-box {
+      width: 22px; height: 22px;
+      border: 2px solid #d0d0d0;
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+      background: white;
+    }
+    .check-item.checked .check-box {
+      background: #34c47c;
+      border-color: #34c47c;
+    }
+    .check-icon { display: none; }
+    .check-item.checked .check-icon { display: block; color: white; font-size: 14px; font-weight: 700; }
+
+    .check-content { flex: 1; }
+    .check-text { font-size: 14px; font-weight: 600; color: #2c2c2c; line-height: 1.5; }
+    .check-desc { font-size: 12px; color: #777; margin-top: 3px; line-height: 1.4; }
+
+    .risk-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-top: 6px;
+      letter-spacing: 0.03em;
+    }
+    .risk-high { background: #fff0f0; color: #e53e3e; }
+    .risk-mid  { background: #fff8e1; color: #d97706; }
+    .risk-low  { background: #f0f4ff; color: #4a6fa5; }
+
+    /* 結果パネル */
+    .result-panel {
+      margin: 16px 12px 24px;
+      background: white;
+      border-radius: 12px;
+      padding: 20px 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .result-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .result-score {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .result-score .num {
+      font-size: 56px;
+      font-weight: 900;
+      color: #1a3a5c;
+      line-height: 1;
+    }
+    .result-score .denom { font-size: 20px; color: #999; }
+    .result-score .label { font-size: 12px; color: #888; margin-top: 4px; }
+
+    .risk-summary {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .risk-box {
+      flex: 1;
+      text-align: center;
+      padding: 12px 8px;
+      border-radius: 10px;
+    }
+    .risk-box.high { background: #fff0f0; }
+    .risk-box.mid  { background: #fff8e1; }
+    .risk-box.low  { background: #f0f4ff; }
+    .risk-box .rnum { font-size: 24px; font-weight: 800; }
+    .risk-box.high .rnum { color: #e53e3e; }
+    .risk-box.mid  .rnum { color: #d97706; }
+    .risk-box.low  .rnum { color: #4a6fa5; }
+    .risk-box .rlabel { font-size: 10px; color: #888; margin-top: 2px; }
+
+    .judgement-box {
+      background: #f8f9fa;
+      border-left: 4px solid #1a3a5c;
+      border-radius: 0 8px 8px 0;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    .judgement-box .j-title { font-size: 14px; font-weight: 700; color: #1a3a5c; margin-bottom: 6px; }
+    .judgement-box .j-text { font-size: 13px; color: #555; line-height: 1.6; }
+
+    .action-list { list-style: none; }
+    .action-list li {
+      padding: 10px 12px;
+      background: #f8fff8;
+      border: 1px solid #d1fae5;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #2c2c2c;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .action-list li::before {
+      content: "▶";
+      color: #34c47c;
+      font-size: 10px;
+      margin-top: 3px;
+      flex-shrink: 0;
+    }
+
+    /* フッター */
+    .footer {
+      background: #1a3a5c;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+    }
+    .footer img { height: 36px; margin-bottom: 8px; opacity: 0.9; }
+    .footer-links { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+    .footer-links a {
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 11px;
+    }
+
+    /* 印刷スタイル */
+    @media print {
+      .counter-bar { position: static; }
+      body { background: white; font-size: 11pt; }
+      .header { background: #1a3a5c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .section { box-shadow: none; border: 1px solid #ddd; }
+      .check-item { break-inside: avoid; }
+      .result-panel { break-inside: avoid; }
+      .footer { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">セミナー参加者限定 ツール①</div>
+  <h1>外国人材が辞める<br><em style="font-style:normal;color:#7dd3fc;">本当の理由</em>チェックリスト</h1>
+  <p class="subtitle">自社の離職リスクを30項目で診断<br>チェックが多いほど離職リスクが高い状態です</p>
+</div>
+
+<div class="counter-bar">
+  <div style="flex:1">
+    <div style="display:flex;align-items:baseline;gap:6px">
+      <div class="counter-label">現在のチェック数</div>
+      <span class="counter-num" id="checkCount">0</span>
+      <span class="counter-total">/ 30項目</span>
+    </div>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progressBar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- A: コミュニケーション -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-letter">A</div>
+    <div class="section-title">コミュニケーション・言葉の壁</div>
+    <div class="section-count" id="countA">0/8</div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">指示は日本語だけで、通訳・翻訳ツールを使っていない</div>
+        <div class="check-desc">意味が伝わらないまま作業させているリスク大</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">「わかった？」と聞くと必ず「はい」と答える</div>
+        <div class="check-desc">理解確認ができていない状態。ミスや事故の温床</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">業界特有の言葉（段取り・養生など）をそのまま使っている</div>
+        <div class="check-desc">ベテランにとっての常識が外国人には未知の言語</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">「適当に」「いい感じに」などの曖昧な指示をよく使う</div>
+        <div class="check-desc">文化的背景が違うと「適当」の基準が全く異なる</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">困ったときに誰に相談すればよいか本人が把握していない</div>
+        <div class="check-desc">孤立感が離職の直接原因になる</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">日本人スタッフが外国人材に話しかけることを避けている</div>
+        <div class="check-desc">職場の孤立は離職率を2〜3倍に高める</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">書類・掲示物がすべて日本語のみで外国語対応がない</div>
+        <div class="check-desc">安全規則が読めない＝事故リスク直結</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="A" data-risk="low" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">定期的な面談や1on1の機会が設けられていない</div>
+        <div class="check-desc">不満を口にできない文化的背景を持つ人材が多い</div>
+        <span class="risk-badge risk-low">低リスク</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- B: 職場環境 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-letter">B</div>
+    <div class="section-title">職場環境・待遇・生活サポート</div>
+    <div class="section-count" id="countB">0/8</div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">給与明細の内容（控除項目など）を説明したことがない</div>
+        <div class="check-desc">「騙されている」と感じると即日退職するケースあり</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">残業・休日出勤を「当然」として強いている</div>
+        <div class="check-desc">本国家族との時間を最重視する文化圏の人材に致命的</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">住居・生活立ち上げのサポートを会社として行っていない</div>
+        <div class="check-desc">来日直後の孤独感が定着率を大きく左右する</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">宗教・文化的な習慣（食事制限・礼拝など）への配慮がない</div>
+        <div class="check-desc">信仰を尊重されない職場は「安全でない場所」と判断される</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">日本人と外国人で異なるルールや扱いをしている</div>
+        <div class="check-desc">不公平感は連鎖退職を引き起こす</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">昇給・キャリアアップの道筋を示したことがない</div>
+        <div class="check-desc">「ここにいても先がない」と感じると2年以内に辞める</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">在留資格の更新手続きを本人任せにしている</div>
+        <div class="check-desc">不安とストレスが蓄積し精神的に追い詰められる</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="B" data-risk="low" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">本国への送金・銀行口座開設のサポートをしていない</div>
+        <div class="check-desc">生活基盤が整わない状態は集中力・モチベーション低下に直結</div>
+        <span class="risk-badge risk-low">低リスク</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- C: 育成・教育 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-letter">C</div>
+    <div class="section-title">育成・教育・成長実感</div>
+    <div class="section-count" id="countC">0/7</div>
+  </div>
+  <div class="check-item" data-section="C" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">OJTが「見て覚えろ」スタイルで手順書がない</div>
+        <div class="check-desc">言語・文化の壁がある人材には致命的な育成方法</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="C" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">ミスをしたとき、理由を確認せず頭ごなしに叱る</div>
+        <div class="check-desc">委縮・萎縮で報告しなくなり大事故につながる</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="C" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">「よくできた」など肯定的なフィードバックをほぼしない</div>
+        <div class="check-desc">承認欲求が満たされない職場は定着しない</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="C" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">日本語学習を業務時間内でサポートする仕組みがない</div>
+        <div class="check-desc">成長機会のない職場には優秀な人材が集まらない</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="C" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">技術習得の目標や評価基準が明文化されていない</div>
+        <div class="check-desc">「何のために頑張るのか」が見えないと意欲が低下</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="C" data-risk="low" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">新人教育を特定のベテランだけに任せきりにしている</div>
+        <div class="check-desc">その人が離れると教育が崩壊する属人化リスク</div>
+        <span class="risk-badge risk-low">低リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="C" data-risk="low" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">試験・資格取得を会社として後押しする制度がない</div>
+        <div class="check-desc">自己成長を重視する外国人材が離れる原因に</div>
+        <span class="risk-badge risk-low">低リスク</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- D: 心理的安全 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-letter">D</div>
+    <div class="section-title">心理的安全・承認・居場所</div>
+    <div class="section-count" id="countD">0/7</div>
+  </div>
+  <div class="check-item" data-section="D" data-risk="high" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">「外国人だから仕方ない」という言葉が社内に出たことがある</div>
+        <div class="check-desc">差別的環境は即日退職・SNS拡散リスクあり</div>
+        <span class="risk-badge risk-high">高リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="D" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">歓迎会・懇親会などに外国人材を誘っていない</div>
+        <div class="check-desc">「自分は仲間ではない」という感覚が離職を加速</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="D" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">外国人材の名前を正確に呼んでいない（ニックネームのみ）</div>
+        <div class="check-desc">名前はアイデンティティ。軽視されると尊重されていないと感じる</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="D" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">本人の意見やアイデアを会議・朝礼で取り上げたことがない</div>
+        <div class="check-desc">「自分の存在が価値ある」という実感が定着を決める</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="D" data-risk="mid" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">体調不良・精神的な不調のサインを見逃してきた経験がある</div>
+        <div class="check-desc">文化的に「弱さを見せない」傾向のある人材は手遅れになりやすい</div>
+        <span class="risk-badge risk-mid">中リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="D" data-risk="low" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">退職した外国人材の理由を本人から直接聞いたことがない</div>
+        <div class="check-desc">原因不明のまま採用を繰り返すのは損失の連鎖</div>
+        <span class="risk-badge risk-low">低リスク</span>
+      </div>
+    </div>
+  </div>
+  <div class="check-item" data-section="D" data-risk="low" onclick="toggleCheck(this)">
+    <div class="check-row">
+      <div class="check-box"><span class="check-icon">✓</span></div>
+      <div class="check-content">
+        <div class="check-text">外国人材が「また来たい」と感じる職場づくりを意識していない</div>
+        <div class="check-desc">紹介採用・口コミ採用ができる会社が最終的に勝つ</div>
+        <span class="risk-badge risk-low">低リスク</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 結果パネル -->
+<div class="result-panel">
+  <div class="result-title">📊 あなたの診断結果</div>
+
+  <div class="result-score">
+    <div><span class="num" id="resultNum">0</span><span class="denom"> / 30</span></div>
+    <div class="label">チェックを入れると結果が表示されます</div>
+  </div>
+
+  <div class="risk-summary">
+    <div class="risk-box high">
+      <div class="rnum" id="highCount">0</div>
+      <div class="rlabel">高リスク</div>
+    </div>
+    <div class="risk-box mid">
+      <div class="rnum" id="midCount">0</div>
+      <div class="rlabel">中リスク</div>
+    </div>
+    <div class="risk-box low">
+      <div class="rnum" id="lowCount">0</div>
+      <div class="rlabel">低リスク</div>
+    </div>
+  </div>
+
+  <div class="judgement-box" id="judgementBox">
+    <div class="j-title" id="judgementTitle">🏆 総合判定</div>
+    <div class="j-text" id="judgementText">項目にチェックを入れると診断結果が表示されます</div>
+  </div>
+
+  <div id="actionSection" style="display:none">
+    <div style="font-size:13px;font-weight:700;color:#1a3a5c;margin-bottom:10px;">▶ 今すぐ取り組む優先アクション</div>
+    <ul class="action-list" id="actionList"></ul>
+  </div>
+</div>
+
+<div class="footer">
+  <div style="color:white;font-weight:700;font-size:13px;margin-bottom:4px;">吉岡ことばアカデミー</div>
+  <div>外国人材の定着・育成をサポート</div>
+  <div class="footer-links">
+    <a href="index.html">← 特典一覧に戻る</a>
+  </div>
+</div>
+
+<script>
+const TOTALS = { A: 8, B: 8, C: 7, D: 7 };
+const sectionCounts = { A: 0, B: 0, C: 0, D: 0 };
+let highChecked = 0, midChecked = 0, lowChecked = 0;
+let total = 0;
+
+function toggleCheck(el) {
+  const wasChecked = el.classList.contains('checked');
+  const section = el.dataset.section;
+  const risk = el.dataset.risk;
+
+  el.classList.toggle('checked');
+
+  if (wasChecked) {
+    total--; sectionCounts[section]--;
+    if (risk === 'high') highChecked--;
+    else if (risk === 'mid') midChecked--;
+    else lowChecked--;
+  } else {
+    total++; sectionCounts[section]++;
+    if (risk === 'high') highChecked++;
+    else if (risk === 'mid') midChecked++;
+    else lowChecked++;
+  }
+  updateUI();
+}
+
+function updateUI() {
+  document.getElementById('checkCount').textContent = total;
+  document.getElementById('resultNum').textContent = total;
+  document.getElementById('progressBar').style.width = (total / 30 * 100) + '%';
+
+  for (const s of ['A','B','C','D']) {
+    document.getElementById('count' + s).textContent = sectionCounts[s] + '/' + TOTALS[s];
+  }
+
+  document.getElementById('highCount').textContent = highChecked;
+  document.getElementById('midCount').textContent = midChecked;
+  document.getElementById('lowCount').textContent = lowChecked;
+
+  let title, text, actions;
+  if (total === 0) {
+    title = '🏆 総合判定';
+    text = '項目にチェックを入れると診断結果が表示されます';
+    actions = [];
+  } else if (total <= 5) {
+    title = '🟢 リスク低：定着の土台ができています';
+    text = 'チェック数が少なく、外国人材の定着に向けた基盤が整っています。チェックのついた項目を中心に、さらなる改善を進めましょう。';
+    actions = ['チェック項目を1つずつ改善する月次計画を作成する', '定着率のデータを可視化して継続的にモニタリングする'];
+  } else if (total <= 15) {
+    title = '🟡 要注意：改善で大きく変わる段階です';
+    text = 'いくつかの課題があります。特に高リスク項目から順番に対処することで、定着率の改善が期待できます。';
+    actions = [
+      '高リスク項目を今月中に改善計画に落とし込む',
+      '日本語教育の仕組みを社内に導入する（吉岡ことばアカデミーにご相談ください）',
+      '月1回の1on1面談を全外国人材に実施する'
+    ];
+  } else if (total <= 23) {
+    title = '🟠 高リスク：即時対応が必要です';
+    text = '多数のリスク要因が存在し、このままでは早期離職が続く可能性が高い状態です。優先度の高いものから順に、具体的な対策を打ちましょう。';
+    actions = [
+      '今週中に高リスク項目の対策チームを編成する',
+      '外部の専門家（支援機関・登録支援機関）に相談する',
+      '日本語コミュニケーション研修を緊急導入する',
+      '外国人材との個別面談を即実施し、現状の声を聴く'
+    ];
+  } else {
+    title = '🔴 緊急：会社の根幹に関わるリスクです';
+    text = 'きわめて多くのリスク要因が見つかりました。採用した外国人材が次々に離職する構造になっている可能性があります。今すぐ専門家への相談と全社的な改革が必要です。';
+    actions = [
+      '経営者・管理職全員でこの診断結果を共有し、緊急会議を開催する',
+      '外国人材の定着支援専門家に今すぐ相談する',
+      '受け入れ体制を根本から見直す「外国人材定着プロジェクト」を立ち上げる',
+      '吉岡ことばアカデミーの企業向け研修プログラムをご検討ください'
+    ];
+  }
+
+  document.getElementById('judgementTitle').textContent = title;
+  document.getElementById('judgementText').textContent = text;
+
+  const actionSection = document.getElementById('actionSection');
+  const actionList = document.getElementById('actionList');
+  if (actions.length > 0) {
+    actionSection.style.display = 'block';
+    actionList.innerHTML = actions.map(a => `<li>${a}</li>`).join('');
+  } else {
+    actionSection.style.display = 'none';
+  }
+}
+</script>
+</body>
+</html>
