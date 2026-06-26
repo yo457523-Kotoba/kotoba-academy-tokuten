@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ことばアカデミー｜ツール③ 日本語レベル簡易診断</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f8f9fa;
+      color: #2c2c2c;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a0 100%);
+      color: white;
+      padding: 20px 16px 24px;
+      text-align: center;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .header h1 { font-size: 18px; font-weight: 700; line-height: 1.45; margin-bottom: 6px; }
+    .header .subtitle { font-size: 12px; opacity: 0.8; line-height: 1.5; }
+
+    /* 被評価者入力 */
+    .input-section {
+      background: white;
+      padding: 16px;
+      border-bottom: 1px solid #eee;
+    }
+    .input-label { font-size: 12px; color: #888; margin-bottom: 6px; }
+    .input-field {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+    }
+    .input-field:focus { border-color: #2563a0; }
+
+    /* カテゴリタブ */
+    .tab-bar {
+      background: white;
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 2px solid #e9ecef;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      border: none;
+      background: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+    }
+    .tab-btn.active { color: #1a3a5c; border-bottom-color: #1a3a5c; }
+
+    /* 進捗 */
+    .progress-bar {
+      background: white;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    .progress-fill-wrap {
+      height: 6px;
+      background: #e9ecef;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2563a0, #34c47c);
+      border-radius: 3px;
+      transition: width 0.3s;
+      width: 0%;
+    }
+
+    /* 質問カード */
+    .questions {
+      padding: 12px 12px 24px;
+    }
+    .category-panel {
+      display: none;
+    }
+    .category-panel.active {
+      display: block;
+    }
+    .cat-desc {
+      background: #f0f5ff;
+      border-left: 4px solid #2563a0;
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .q-card {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .q-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2c2c2c;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .q-num {
+      font-size: 11px;
+      color: #aaa;
+      margin-bottom: 4px;
+    }
+    .rating-row {
+      display: flex;
+      gap: 6px;
+    }
+    .rating-btn {
+      flex: 1;
+      padding: 10px 4px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      background: white;
+      font-size: 13px;
+      font-weight: 700;
+      color: #888;
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: center;
+    }
+    .rating-btn.sel-1 { background: #fff0f0; border-color: #e53e3e; color: #e53e3e; }
+    .rating-btn.sel-2 { background: #fff8e1; border-color: #d97706; color: #d97706; }
+    .rating-btn.sel-3 { background: #fffde7; border-color: #c2a500; color: #c2a500; }
+    .rating-btn.sel-4 { background: #f0fff6; border-color: #22863a; color: #22863a; }
+    .rating-btn.sel-5 { background: #e8f5e9; border-color: #1a7335; color: #1a7335; }
+    .rating-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #aaa;
+      margin-top: 4px;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+    }
+    .nav-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .nav-prev { background: #f0f0f0; color: #666; }
+    .nav-next { background: #1a3a5c; color: white; }
+
+    /* 結果 */
+    .result-section {
+      display: none;
+      padding: 12px;
+    }
+    .result-section.show { display: block; }
+
+    .level-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .level-label { font-size: 12px; color: #888; margin-bottom: 8px; }
+    .level-badge {
+      display: inline-block;
+      font-size: 28px;
+      font-weight: 900;
+      padding: 8px 24px;
+      border-radius: 40px;
+      margin-bottom: 10px;
+    }
+    .level-name { font-size: 16px; font-weight: 700; color: #1a3a5c; margin-bottom: 6px; }
+    .level-desc { font-size: 13px; color: #666; line-height: 1.6; }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .score-item {
+      background: white;
+      border-radius: 10px;
+      padding: 12px 8px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .score-num { font-size: 22px; font-weight: 800; color: #1a3a5c; }
+    .score-label { font-size: 10px; color: #888; margin-top: 2px; }
+
+    .recommend-box {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .recommend-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a3a5c;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .recommend-item {
+      padding: 10px 12px;
+      background: #f8f9fa;
+      border-radius: 8px;
+      font-size: 13px;
+      color: #2c2c2c;
+      margin-bottom: 8px;
+      line-height: 1.5;
+      border-left: 3px solid #2563a0;
+    }
+
+    .reset-btn {
+      width: 100%;
+      padding: 12px;
+      background: #f0f0f0;
+      border: none;
+      border-radius: 10px;
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+      margin-bottom: 24px;
+    }
+
+    .footer {
+      background: #1a3a5c;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+    .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px; }
+
+    @media print {
+      .tab-bar, .nav-buttons, .reset-btn { display: none; }
+      .category-panel { display: block !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">セミナー参加者限定 ツール③</div>
+  <h1>日本語レベル<em style="font-style:normal;color:#7dd3fc;">簡易診断</em><br>（判定シート）</h1>
+  <p class="subtitle">6カテゴリで「今どこにいるか」を把握<br>推奨コースも表示されます</p>
+</div>
+
+<div class="input-section">
+  <div class="input-label">被評価者のお名前（任意）</div>
+  <input class="input-field" type="text" id="workerName" placeholder="例：グエン・ヴァン・アン">
+</div>
+
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" onclick="showCat(0, this)">聴く</button>
+  <button class="tab-btn" onclick="showCat(1, this)">話す</button>
+  <button class="tab-btn" onclick="showCat(2, this)">読む</button>
+  <button class="tab-btn" onclick="showCat(3, this)">書く</button>
+  <button class="tab-btn" onclick="showCat(4, this)">語彙</button>
+  <button class="tab-btn" onclick="showCat(5, this)">現場語</button>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-text">
+    <span id="progressLabel">回答済み 0 / 18問</span>
+    <span id="progressPct">0%</span>
+  </div>
+  <div class="progress-fill-wrap">
+    <div class="progress-fill" id="progressFill"></div>
+  </div>
+</div>
+
+<div class="questions" id="questionsArea">
+
+  <!-- カテゴリ0: 聴く -->
+  <div class="category-panel active" data-cat="0">
+    <div class="cat-desc">日常的な指示・会話を<strong>「聴いて」理解できるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q1 / 聴く</div>
+      <div class="q-text">「今日の作業は、この図面の通りに屋根の板金を取り付けてください」という指示を聞いて、何をすべきか理解できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="0-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="0-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="0-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="0-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="0-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼ理解できない</span><span>完全に理解できる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q2 / 聴く</div>
+      <div class="q-text">「○○が終わったら○○してください」という2ステップ以上の指示を聞いて、順番通りに実行できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="0-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="0-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="0-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="0-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="0-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼ理解できない</span><span>完全に理解できる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q3 / 聴く</div>
+      <div class="q-text">「今日は早く終わりそうだから、残りは明日でいいよ」などの状況に応じた変更指示を聞いて理解できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="0-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="0-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="0-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="0-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="0-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼ理解できない</span><span>完全に理解できる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ1: 話す -->
+  <div class="category-panel" data-cat="1">
+    <div class="cat-desc">自分の考えや状況を<strong>「話して」伝えられるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q4 / 話す</div>
+      <div class="q-text">「わかりません」「もう一度言ってください」を日本語で言える</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="1-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="1-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="1-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="1-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="1-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>言えない</span><span>自然に言える</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q5 / 話す</div>
+      <div class="q-text">作業中に異常・トラブルを発見したとき、上司に日本語で報告できる（「○○が壊れています」「これはどうすればいいですか？」など）</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="1-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="1-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="1-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="1-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="1-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全く言えない</span><span>流暢に伝えられる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q6 / 話す</div>
+      <div class="q-text">「昨日やった作業はどうだったか、うまくいったか」を日本語で話せる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="1-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="1-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="1-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="1-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="1-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>言えない</span><span>流暢に話せる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ2: 読む -->
+  <div class="category-panel" data-cat="2">
+    <div class="cat-desc">ひらがな・カタカナ・漢字を<strong>「読んで」理解できるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q7 / 読む</div>
+      <div class="q-text">ひらがな・カタカナで書かれた掲示（「きんえん」「とりあつかいちゅうい」など）を読んで意味がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="2-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="2-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="2-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="2-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="2-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>読めない</span><span>すぐ読める</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q8 / 読む</div>
+      <div class="q-text">日付・数字・単位（㎜・㎏・本・枚など）を含んだ作業指示書を読んで理解できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="2-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="2-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="2-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="2-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="2-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>読めない</span><span>完全に理解できる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q9 / 読む</div>
+      <div class="q-text">安全マニュアルや手順書（漢字含む）を読んで、1人で作業手順を把握できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="2-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="2-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="2-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="2-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="2-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>読めない</span><span>1人で理解できる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ3: 書く -->
+  <div class="category-panel" data-cat="3">
+    <div class="cat-desc">日本語を<strong>「書いて」伝えられるか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q10 / 書く</div>
+      <div class="q-text">自分の名前をひらがな・カタカナで書ける</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="3-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="3-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="3-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="3-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="3-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>書けない</span><span>問題なく書ける</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q11 / 書く</div>
+      <div class="q-text">作業日報（日付・作業内容・時間・気づいたこと）を日本語で記入できる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="3-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="3-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="3-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="3-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="3-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全く書けない</span><span>問題なく書ける</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q12 / 書く</div>
+      <div class="q-text">LINEやメモアプリで、上司への簡単な連絡文を日本語で書ける</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="3-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="3-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="3-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="3-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="3-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全く書けない</span><span>自然に書ける</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ4: 語彙 -->
+  <div class="category-panel" data-cat="4">
+    <div class="cat-desc">日常・職場で使われる<strong>語彙を知っているか</strong>を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q13 / 語彙</div>
+      <div class="q-text">数字・日付・曜日・時刻を日本語で言える・聞いてわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="4-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="4-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="4-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="4-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="4-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼわからない</span><span>完全にわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q14 / 語彙</div>
+      <div class="q-text">「右・左・上・下・前・後ろ」「大きい・小さい・長い・短い」などの方向・形容詞がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="4-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="4-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="4-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="4-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="4-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼわからない</span><span>完全にわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q15 / 語彙</div>
+      <div class="q-text">「締める・開ける・取り付ける・外す・押す・引く・持ち上げる」などの動作語がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="4-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="4-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="4-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="4-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="4-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>ほぼわからない</span><span>完全にわかる</span></div>
+    </div>
+  </div>
+
+  <!-- カテゴリ5: 現場語 -->
+  <div class="category-panel" data-cat="5">
+    <div class="cat-desc">板金・建設現場で使われる<strong>専門用語・現場語</strong>の理解度を評価します</div>
+
+    <div class="q-card">
+      <div class="q-num">Q16 / 現場語</div>
+      <div class="q-text">「養生・段取り・墨出し・バリ取り」などの現場用語の意味がわかる（全4語）</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="5-0" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="5-0" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="5-0" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="5-0" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="5-0" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>1語もわからない</span><span>4語全てわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q17 / 現場語</div>
+      <div class="q-text">「ヒヤリハット」「KY活動」「ゼロ災」などの安全用語の意味がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="5-1" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="5-1" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="5-1" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="5-1" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="5-1" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>1語もわからない</span><span>全てわかる</span></div>
+    </div>
+
+    <div class="q-card">
+      <div class="q-num">Q18 / 現場語</div>
+      <div class="q-text">「ホウレンソウ（報連相）」「OJT」「段取り八分」などのビジネス用語・慣用語がわかる</div>
+      <div class="rating-row">
+        <button class="rating-btn" data-q="5-2" data-v="1" onclick="rate(this)">1</button>
+        <button class="rating-btn" data-q="5-2" data-v="2" onclick="rate(this)">2</button>
+        <button class="rating-btn" data-q="5-2" data-v="3" onclick="rate(this)">3</button>
+        <button class="rating-btn" data-q="5-2" data-v="4" onclick="rate(this)">4</button>
+        <button class="rating-btn" data-q="5-2" data-v="5" onclick="rate(this)">5</button>
+      </div>
+      <div class="rating-label"><span>全くわからない</span><span>全てわかる</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav-buttons">
+  <button class="nav-btn nav-prev" id="prevBtn" onclick="navigate(-1)">← 前へ</button>
+  <button class="nav-btn nav-next" id="nextBtn" onclick="navigate(1)">次へ →</button>
+</div>
+
+<!-- 結果セクション -->
+<div class="result-section" id="resultSection">
+  <div class="level-card" id="levelCard">
+    <div class="level-label">総合日本語レベル</div>
+    <div class="level-badge" id="levelBadge">--</div>
+    <div class="level-name" id="levelName">診断中...</div>
+    <div class="level-desc" id="levelDesc"></div>
+  </div>
+
+  <div class="score-grid" id="scoreGrid"></div>
+
+  <div class="recommend-box">
+    <div class="recommend-title">📚 推奨コース・アクション</div>
+    <div id="recommendList"></div>
+  </div>
+
+  <button class="reset-btn" onclick="resetAll()">🔄 もう一度診断する</button>
+</div>
+
+<div class="footer">
+  <div style="color:white;font-weight:700;font-size:13px;margin-bottom:4px;">吉岡ことばアカデミー</div>
+  <div>外国人材の定着・育成をサポート</div>
+  <div class="footer-links">
+    <a href="index.html">← 特典一覧に戻る</a>
+  </div>
+</div>
+
+<script>
+const CATS = ['聴く', '話す', '読む', '書く', '語彙', '現場語'];
+let currentCat = 0;
+const answers = {};
+
+function rate(btn) {
+  const q = btn.dataset.q;
+  const v = parseInt(btn.dataset.v);
+  const row = btn.parentElement;
+
+  row.querySelectorAll('.rating-btn').forEach(b => {
+    b.className = 'rating-btn';
+  });
+  btn.classList.add('sel-' + v);
+  answers[q] = v;
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = 18;
+  const done = Object.keys(answers).length;
+  document.getElementById('progressLabel').textContent = `回答済み ${done} / ${total}問`;
+  document.getElementById('progressPct').textContent = Math.round(done / total * 100) + '%';
+  document.getElementById('progressFill').style.width = (done / total * 100) + '%';
+}
+
+function showCat(idx, btn) {
+  currentCat = idx;
+  document.querySelectorAll('.category-panel').forEach((p, i) => {
+    p.classList.toggle('active', i === idx);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
+
+  const isLast = idx === 5;
+  document.getElementById('nextBtn').textContent = isLast ? '診断結果を見る ▶' : '次へ →';
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('prevBtn').style.opacity = idx === 0 ? '0.4' : '1';
+}
+
+function navigate(dir) {
+  const next = currentCat + dir;
+  if (next < 0) return;
+  if (next > 5) {
+    showResult();
+    return;
+  }
+  const tabs = document.querySelectorAll('.tab-btn');
+  showCat(next, tabs[next]);
+  tabs[next].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  window.scrollTo(0, 0);
+}
+
+function getCatScore(catIdx) {
+  const keys = [`${catIdx}-0`, `${catIdx}-1`, `${catIdx}-2`];
+  const scores = keys.map(k => answers[k] || 0);
+  const filled = scores.filter(s => s > 0).length;
+  const sum = scores.reduce((a, b) => a + b, 0);
+  return filled > 0 ? sum / filled : 0;
+}
+
+function showResult() {
+  document.getElementById('questionsArea').style.display = 'none';
+  document.querySelectorAll('.tab-bar, .nav-buttons, .progress-bar').forEach(e => e.style.display = 'none');
+  document.getElementById('resultSection').classList.add('show');
+
+  const catScores = CATS.map((_, i) => getCatScore(i));
+  const avg = catScores.reduce((a, b) => a + b, 0) / catScores.filter(s => s > 0).length || 0;
+
+  let level, levelColor, levelName, levelDesc, recommends;
+
+  if (avg < 1.5) {
+    level = 'N5以下'; levelColor = '#fee2e2'; levelName = '入門レベル — 基礎から学習が必要';
+    levelDesc = '日常的な短い指示も理解が難しい段階です。ひらがな・カタカナから丁寧に学習を始める必要があります。';
+    recommends = [
+      '【緊急】吉岡ことばアカデミー「ゼロ初級コース」受講を推奨',
+      '現場では必ず母国語のわかる人の補助をつける',
+      'ひらがな・カタカナの読み書き練習（週5日15分〜）',
+      '翻訳アプリ（DeepL等）の使い方を習得させる'
+    ];
+  } else if (avg < 2.5) {
+    level = 'N4〜N5'; levelColor = '#fef3c7'; levelName = '初級レベル — 基本的な学習が必要';
+    levelDesc = '簡単な言葉や日常的な表現は理解できますが、職場での会話にはまだサポートが必要な段階です。';
+    recommends = [
+      '吉岡ことばアカデミー「初級コース」（生活日本語 + 職場日本語）',
+      '1対1の現場日本語練習を週2〜3回実施',
+      '日常会話の練習：挨拶・報告・質問の3フレーズを毎日練習',
+      '手順書にふりがなをつける・絵や写真で補足する'
+    ];
+  } else if (avg < 3.5) {
+    level = 'N3〜N4'; levelColor = '#fef9c3'; levelName = '中初級レベル — 実用化に向けて継続学習';
+    levelDesc = '基本的な指示や報告はできますが、職場での柔軟な会話にはまだ練習が必要な段階です。';
+    recommends = [
+      '吉岡ことばアカデミー「中級実践コース」（現場日本語 + ビジネス語彙）',
+      '弱点カテゴリ（スコアが低い分野）を集中して練習',
+      '週1回の振り返り面談（日本語でのコミュニケーション機会）',
+      '現場語・業界用語の言い換えカード（ツール②）を活用'
+    ];
+  } else if (avg < 4.5) {
+    level = 'N3'; levelColor = '#d1fae5'; levelName = '中級レベル — 自立した業務に近い水準';
+    levelDesc = '日常的な業務はほぼこなせますが、さらなる語彙力と表現の幅を広げることで、職場の主要メンバーになれます。';
+    recommends = [
+      '吉岡ことばアカデミー「N3準備コース」または「職場リーダー語彙コース」',
+      '他の外国人材への通訳サポートを経験として積む',
+      '日本語での提案・意見表明（会議・朝礼での発言）を経験させる',
+      '資格取得（JLPT N3）へのチャレンジを推奨'
+    ];
+  } else {
+    level = 'N2以上'; levelColor = '#bbf7d0'; levelName = '上級レベル — 職場の中核として活躍できる水準';
+    levelDesc = 'ほぼすべての職場場面で日本語を使って自立的に仕事ができます。次のステップとしてリーダー・通訳役を担える水準です。';
+    recommends = [
+      'JLPT N2・N1へのチャレンジを推奨',
+      '後輩外国人材のサポーターとしての役割を付与する',
+      '職場内通訳・多文化チームのリーダー候補として育成',
+      '吉岡ことばアカデミー「上級ビジネス日本語コース」（任意）'
+    ];
+  }
+
+  document.getElementById('levelBadge').textContent = level;
+  document.getElementById('levelBadge').style.background = levelColor;
+  document.getElementById('levelBadge').style.color = '#1a3a5c';
+  document.getElementById('levelName').textContent = levelName;
+  document.getElementById('levelDesc').textContent = levelDesc;
+
+  // カテゴリスコア表示
+  const grid = document.getElementById('scoreGrid');
+  grid.innerHTML = CATS.map((cat, i) => {
+    const s = catScores[i];
+    const pct = s > 0 ? Math.round(s / 5 * 100) : 0;
+    return `<div class="score-item">
+      <div class="score-num">${pct > 0 ? pct + '%' : '--'}</div>
+      <div class="score-label">${cat}</div>
+    </div>`;
+  }).join('');
+
+  // 推奨リスト
+  document.getElementById('recommendList').innerHTML =
+    recommends.map(r => `<div class="recommend-item">${r}</div>`).join('');
+
+  window.scrollTo(0, 0);
+}
+
+function resetAll() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.rating-btn').forEach(b => b.className = 'rating-btn');
+  document.getElementById('questionsArea').style.display = '';
+  document.querySelectorAll('.tab-bar, .nav-buttons, .progress-bar').forEach(e => e.style.display = '');
+  document.getElementById('resultSection').classList.remove('show');
+  showCat(0, document.querySelectorAll('.tab-btn')[0]);
+  updateProgress();
+  window.scrollTo(0, 0);
+}
+
+// 初期化
+showCat(0, document.querySelectorAll('.tab-btn')[0]);
+document.getElementById('prevBtn').style.opacity = '0.4';
+</script>
+</body>
+</html>
