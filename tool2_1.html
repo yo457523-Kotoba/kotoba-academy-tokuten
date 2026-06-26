@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ことばアカデミー｜ツール② 現場の通じない日本語 言い換え30選</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f8f9fa;
+      color: #2c2c2c;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a3a5c 0%, #2563a0 100%);
+      color: white;
+      padding: 20px 16px 24px;
+      text-align: center;
+    }
+    .header .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+    .header h1 { font-size: 18px; font-weight: 700; line-height: 1.45; margin-bottom: 6px; }
+    .header .subtitle { font-size: 12px; opacity: 0.8; line-height: 1.5; }
+
+    /* カテゴリタブ */
+    .tab-bar {
+      background: white;
+      display: flex;
+      overflow-x: auto;
+      border-bottom: 2px solid #e9ecef;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .tab-bar::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #888;
+      border: none;
+      background: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.15s;
+    }
+    .tab-btn.active { color: #1a3a5c; border-bottom-color: #1a3a5c; }
+
+    /* 検索 */
+    .search-bar {
+      padding: 12px 12px 8px;
+      background: white;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .search-input {
+      width: 100%;
+      padding: 9px 14px 9px 36px;
+      border: 1.5px solid #ddd;
+      border-radius: 20px;
+      font-size: 13px;
+      outline: none;
+      background: #f8f9fa url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 12px center;
+    }
+    .search-input:focus { border-color: #2563a0; }
+
+    /* 説明バー */
+    .info-bar {
+      background: #f0f5ff;
+      border-left: 4px solid #2563a0;
+      margin: 12px;
+      padding: 10px 12px;
+      border-radius: 0 8px 8px 0;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    /* 言い換えカード */
+    .cards {
+      padding: 0 12px 24px;
+    }
+    .category-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #888;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin: 16px 0 8px;
+      padding-left: 4px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: box-shadow 0.15s;
+    }
+    .card:active { box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .card-header {
+      padding: 12px 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .card-num {
+      width: 24px; height: 24px;
+      background: #1a3a5c;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .card-main { flex: 1; }
+    .card-ng {
+      font-size: 15px;
+      font-weight: 700;
+      color: #e53e3e;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .ng-label {
+      font-size: 10px;
+      background: #fff0f0;
+      color: #e53e3e;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .arrow-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 6px 0;
+    }
+    .arrow { color: #34c47c; font-weight: 700; font-size: 16px; }
+    .card-ok {
+      font-size: 15px;
+      font-weight: 700;
+      color: #22863a;
+    }
+    .ok-label {
+      font-size: 10px;
+      background: #f0fff6;
+      color: #22863a;
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .card-expand-icon {
+      color: #bbb;
+      font-size: 16px;
+      margin-top: 2px;
+      transition: transform 0.2s;
+    }
+    .card.open .card-expand-icon { transform: rotate(180deg); }
+    .card-detail {
+      display: none;
+      padding: 0 14px 14px 50px;
+      border-top: 1px solid #f5f5f5;
+    }
+    .card.open .card-detail { display: block; }
+    .detail-label { font-size: 11px; font-weight: 700; color: #888; margin: 10px 0 4px; }
+    .detail-text { font-size: 13px; color: #555; line-height: 1.6; }
+    .detail-example {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #2c2c2c;
+      line-height: 1.6;
+    }
+    .detail-example strong { color: #1a3a5c; }
+    .tip-badge {
+      display: inline-block;
+      background: #fff8e1;
+      color: #d97706;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-top: 8px;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 40px 20px;
+      color: #aaa;
+      font-size: 14px;
+      display: none;
+    }
+
+    .footer {
+      background: #1a3a5c;
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 20px 16px;
+      font-size: 11px;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 16px; margin-top: 12px; }
+    .footer-links a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px; }
+
+    @media print {
+      body { background: white; }
+      .header { background: #1a3a5c !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .tab-bar, .search-bar { display: none; }
+      .card-detail { display: block !important; }
+      .card { break-inside: avoid; margin-bottom: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">セミナー参加者限定 ツール②</div>
+  <h1>現場の「通じない日本語」<br><em style="font-style:normal;color:#7dd3fc;">言い換え30選</em></h1>
+  <p class="subtitle">職長に渡して即使える<br>現場用語を「動作言語」に変換するカード集</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="filterCategory('all', this)">すべて</button>
+  <button class="tab-btn" onclick="filterCategory('shiji', this)">指示・作業</button>
+  <button class="tab-btn" onclick="filterCategory('anzen', this)">安全・注意</button>
+  <button class="tab-btn" onclick="filterCategory('ninchi', this)">確認・認知</button>
+  <button class="tab-btn" onclick="filterCategory('kannkei', this)">人間関係</button>
+  <button class="tab-btn" onclick="filterCategory('jikan', this)">時間・納期</button>
+</div>
+
+<div class="search-bar">
+  <input class="search-input" type="text" placeholder="言葉を検索…" oninput="searchCards(this.value)">
+</div>
+
+<div class="info-bar">
+  カードをタップすると詳しい使い方・例文が表示されます。<strong>職長・現場リーダーがそのまま使える</strong>言い換えフレーズです。
+</div>
+
+<div class="cards" id="cardsContainer">
+
+  <div class="category-title" data-cat="shiji">指示・作業系</div>
+
+  <div class="card" data-cat="shiji" data-ng="段取り" data-ok="作業の順番・準備">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">1</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>段取り</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">作業の順番・準備</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「段取り」は日本語特有の概念語。「準備」とは似て非なるニュアンスで、外国人材には全体像が見えない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「じゃあ段取りよろしく」<br>
+        ✅「<strong>①道具を準備する ②材料を並べる ③開始する</strong>、この順番でやってください」
+      </div>
+      <span class="tip-badge">💡 順番を数字で示すと伝わりやすい</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="養生" data-ok="傷つかないようにテープ・シートで覆う">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">2</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>養生する</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">テープ・シートで覆って保護する</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「養生」は医療用語としても使われ、現場での意味（保護・被覆）とは別の意味に解釈されることがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「ここを養生しておいて」<br>
+        ✅「<strong>この壁と床を、汚れないようにテープとシートで覆ってください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="墨出し" data-ok="壁や床に作業ラインを書く">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">3</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>墨出し</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">壁・床に作業の線を引く</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">建設業界固有の専門用語。翻訳しても「墨」の意味が伝わらず、何をする作業なのか全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>ここに、このラインに沿って鉛筆・チョークで線を引いてください</strong>（設計図のこの部分）」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="適当にやっといて" data-ok="○○してください（具体的に）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">4</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>適当にやっといて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○の通りにやってください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本語の「適当」は文脈によって「いい加減」と「ちょうどよく」の両方の意味がある。外国人には混乱を招く。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「あとは適当にやっといて」<br>
+        ✅「<strong>この手順書の3番と4番を終わらせて、終わったら私に報告してください</strong>」
+      </div>
+      <span class="tip-badge">💡 「適当」「いい感じ」「うまくやって」はすべてNG</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="ちゃんとやって" data-ok="○○が○○になるようにやってください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">5</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>ちゃんとやって</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○が○○になるようにやってください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「ちゃんと」の基準が話し手と聞き手で全く異なる。外国人材は「ちゃんと」できていると思っているのに叱られるケースが多発。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「ちゃんとやってよ」<br>
+        ✅「<strong>ネジは、動かないくらいしっかり締めてください。手で回して止まったあと、さらに1/4回転（90度）締めます</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="見ておいて" data-ok="○○を確認して、問題があれば教えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">6</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>見ておいて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○を確認して、問題があれば教えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「見る」だけなのか「確認して報告する」のかが不明。目で見るだけで作業終了と判断してしまうことがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この接合部分を確認して、すき間があれば私を呼んでください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="気を利かせて" data-ok="○○の時は○○してください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">7</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>気を利かせて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○の時は○○してください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「空気を読む」「察する」は日本文化特有の概念。異なる文化圏の人には期待される行動が全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「もうちょっと気を利かせてほしい」<br>
+        ✅「<strong>材料が残り少なくなったら、補充の前に私に声をかけてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="段取り八分" data-ok="準備が仕事の8割です">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">8</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>段取り八分</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">準備が仕事の8割を決める</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本の職人言葉・慣用句。直訳しても意味が通じず、「8割って何が8割？」と混乱させてしまう。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>道具・材料の準備をしっかりすることが、仕事の成功の8割を決めます。作業を始める前に、必ずリストを確認してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="anzen">安全・注意系</div>
+
+  <div class="card" data-cat="anzen" data-ng="危ないから気をつけて" data-ok="○○をしないでください。理由は○○です">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">9</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>危ないから気をつけて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○しないでください。○○の危険があります</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「気をつける」が何を指すのか不明。何を避けるべきかが伝わらないため、事故防止にならない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この機械の近くでは、手袋をしたまま作業しないでください。手袋が巻き込まれてけがをする危険があります</strong>」
+      </div>
+      <span class="tip-badge">⚠️ 安全指示は「何をしない」＋「なぜか」がセット</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="KY活動" data-ok="作業前の危険確認">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">10</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>KY活動</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">作業前の「危ない場所・状況」の確認</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「KY（危険予知）」は日本語の略語。外国人には「空気読めない」の意味に混同されることもある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>作業を始める前に、5分間かけて「どこが危ないか」「どんな事故が起きるか」をみんなで確認します</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="フールプルーフ" data-ok="まちがえても大丈夫な仕組み">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">11</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>フールプルーフ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">間違えても事故にならない仕組み</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">英語由来のカタカナ語だが、実際の英語とは発音が大きく異なり、外国人に通じない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この部品は、向きを間違えても取り付けられないように形が違います。安心して作業できます</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="ヒヤリハット" data-ok="事故になりかけた出来事の報告">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">12</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>ヒヤリハット</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">「危なかった」出来事を報告する</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本語の擬音語（ヒヤリ＋ハット）から来た造語。意味が全く見えない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>事故にはならなかったけれど「危なかった」「びっくりした」ことがあれば、このシートに書いて提出してください。大事故を防ぐためです</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="ninchi">確認・認知系</div>
+
+  <div class="card" data-cat="ninchi" data-ng="わかった？" data-ok="○○を繰り返して言ってもらえますか">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">13</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>わかった？</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今言ったことを繰り返してもらえますか</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">多くの文化圏では「わかった？」に対して「はい」と答えることが礼儀。理解していなくても「はい」と言ってしまう。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「じゃあ、わかった？」<br>
+        ✅「<strong>今説明した手順を、自分の言葉で言ってみてください</strong>」
+      </div>
+      <span class="tip-badge">💡 理解確認は「復唱させる」が最も確実</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="ninchi" data-ng="確認しておいて" data-ok="○○を見て、○○かどうか教えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">14</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>確認しておいて</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○を見て、問題があれば教えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「確認」が「見る」なのか「数える」なのか「報告する」なのかが不明。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この接合部分を見て、すき間が3mm以上あれば私に知らせてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="ninchi" data-ng="後で報告して" data-ok="○時○分までに○○を教えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">15</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>後で報告して</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○時までに○○を教えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「後で」がいつを指すのか不明。終業後なのか、数分後なのか解釈が分かれる。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>3時までに、今日の作業がどこまで終わったか教えてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="ninchi" data-ng="なんとなくわかる？" data-ok="どの部分がわからないですか">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">16</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>なんとなくわかる？</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">どの部分がわからないですか？</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「なんとなく」という曖昧な程度副詞は翻訳困難。かつ「わからない」と言えない文化的プレッシャーがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>1番・2番・3番の手順、どれかわからないものはありますか？遠慮なく聞いてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="kannkei">人間関係・コミュニケーション系</div>
+
+  <div class="card" data-cat="kannkei" data-ng="空気読んで" data-ok="○○の時は○○してください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">17</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>空気読んで</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○の時は○○してください（具体的に）</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「空気を読む」は日本文化特有の高コンテキストコミュニケーション。異なる文化圏の人には「空気」の意味すら不明。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「もうちょっと空気読んで」<br>
+        ✅「<strong>お客様が来た時は、作業を止めて挨拶してください。お客様がいない時は作業を続けてOKです</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="よろしくお願いします" data-ok="○○してください（具体的な依頼）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">18</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>よろしくお願いします</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○○をお願いします（具体的な依頼内容）</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「よろしく」は日本語の万能丁寧語。依頼内容を含まないため、何をしてほしいのかが全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「じゃあ、よろしく！」<br>
+        ✅「<strong>では、A棟の1階の清掃をお願いします。終わったら報告してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="以心伝心" data-ok="言葉で伝えてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">19</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>以心伝心</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">言葉にして伝えてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">漢字4文字の慣用句。翻訳自体が難しく、そもそもの概念が異文化では共有されていない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>困ったこと・わからないことは、黙っていないで言葉で言ってください。言わないと、私にはわかりません</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="ホウレンソウ" data-ok="報告・連絡・相談をしてください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">20</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>ホウレンソウ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">報告・連絡・相談の3つをしてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「報・連・相」の頭文字語。野菜のほうれん草を想像してしまう。ビジネス略語は外国人には伝わらない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>①仕事が終わったら私に言う（報告） ②変更があれば先に言う（連絡） ③困ったら一人で抱えず相談する（相談）――この3つをお願いします</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="category-title" data-cat="jikan">時間・納期系</div>
+
+  <div class="card" data-cat="jikan" data-ng="早めにやって" data-ok="○月○日○時までにやってください">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">21</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>早めにやって</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○日○時までにやってください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「早め」は人によって解釈が異なる。1時間後なのか、明日なのか、今週中なのかが全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「早めによろしく」<br>
+        ✅「<strong>今日の15時までに完成させてください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="できるだけ早く" data-ok="○時間以内でお願いします">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">22</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>できるだけ早く</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○時間以内でお願いします</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「できるだけ」は自分の能力の範囲内での最速を意味するが、その期待値が話し手と聞き手で大きくずれる。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>急いでほしいです。2時間以内でできますか？</strong>もし無理なら教えてください」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="そろそろ" data-ok="今すぐ／5分以内に">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">23</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>そろそろ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今すぐ / ○分以内に</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「そろそろ」は曖昧な時間感覚を表す語。外国語への翻訳が難しく、緊急度が全く伝わらない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ❌「そろそろ休憩終わりにして」<br>
+        ✅「<strong>3分後に作業を再開してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="今すぐ" data-ok="今すぐ（○分以内に）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">24</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>今すぐ！（怒鳴る）</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今すぐ止めてください。理由は○○です</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">感情的な指示は、プライドを傷つけ恐怖を与えるだけで行動変容につながらない。理由なき命令は反発を招く。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今すぐ機械を止めてください。（止めるボタンはここです）。○○の部品が外れていて危ないからです</strong>」
+      </div>
+      <span class="tip-badge">⚠️ 緊急時こそ理由をセットで伝える</span>
+    </div>
+  </div>
+
+  <div class="card" data-cat="jikan" data-ng="いつでもいいよ" data-ok="○日○時までならいつでも大丈夫です">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">25</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>いつでもいいよ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">○日までならいつでも大丈夫です</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「いつでも」が文字通りに解釈され、1ヶ月後に提出されたというトラブルが実際に発生している。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今週の金曜日（○月○日）までなら、いつ提出してもOKです</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="のりしろ" data-ok="重ねる部分の幅">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">26</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>のりしろ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">重ねる部分は○cmです</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">板金・建築の現場でよく使われる語だが、外国語に直訳できない和製語。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この板とあの板を3cmだけ重ねてください（写真を見せながら）</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="バリ取り" data-ok="角の出っ張りを削る・取る">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">27</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>バリ取り</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">角の出っ張り（鋭い部分）を削る</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「バリ」はポルトガル語由来の専門用語。外国人にも翻訳困難な現場語。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>切った後に残った金属の鋭い出っ張りを、このヤスリで削ってください（実物を見せながら）</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="shiji" data-ng="あとは野となれ山となれ" data-ok="今日の作業はここで終わりです">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">28</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>あとは野となれ山となれ</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今日はここで終わりです。片付けをしてください</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">日本語の慣用句・ことわざ。逐語訳しても全く意味が通じず、何をすべきかも不明。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今日の作業はここで終わりです。道具を片付けて、床を清掃してから帰宅してください</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="anzen" data-ng="一丁前" data-ok="一人前（一人でできる）">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">29</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>一丁前になったな</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">一人でできるようになりましたね、すごい</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">褒め言葉として使っているが、「丁前」という単位の概念が外国人には全くわからない。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>この作業、もう一人でできるようになりましたね！本当に上手くなりました</strong>」
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="kannkei" data-ng="お疲れさま" data-ok="今日もありがとうございました">
+    <div class="card-header" onclick="toggleCard(this.parentElement)">
+      <div class="card-num">30</div>
+      <div class="card-main">
+        <div class="card-ng"><span class="ng-label">NG</span>お疲れさま（だけ）</div>
+        <div class="arrow-row"><span class="arrow">↓</span><span class="ok-label">OK</span></div>
+        <div class="card-ok">今日もありがとう。○○がうまかった</div>
+      </div>
+      <div class="card-expand-icon">▼</div>
+    </div>
+    <div class="card-detail">
+      <div class="detail-label">なぜ通じないか</div>
+      <div class="detail-text">「お疲れさま」は日本語固有の労いの言葉。翻訳すると「あなたは疲れている」となり、ネガティブに聞こえることがある。</div>
+      <div class="detail-label">使い方例</div>
+      <div class="detail-example">
+        ✅「<strong>今日もありがとう。○○の作業、とても丁寧にできていました。また明日よろしく</strong>」
+      </div>
+      <span class="tip-badge">💡 「ありがとう」＋「具体的な褒め」が定着率を上げる</span>
+    </div>
+  </div>
+
+</div>
+
+<div class="no-results" id="noResults">
+  該当する言い換えが見つかりませんでした
+</div>
+
+<div class="footer">
+  <div style="color:white;font-weight:700;font-size:13px;margin-bottom:4px;">吉岡ことばアカデミー</div>
+  <div>外国人材の定着・育成をサポート</div>
+  <div class="footer-links">
+    <a href="index.html">← 特典一覧に戻る</a>
+  </div>
+</div>
+
+<script>
+function toggleCard(card) {
+  card.classList.toggle('open');
+}
+
+function filterCategory(cat, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  document.querySelectorAll('.card').forEach(c => {
+    c.style.display = (cat === 'all' || c.dataset.cat === cat) ? '' : 'none';
+  });
+  document.querySelectorAll('.category-title').forEach(t => {
+    t.style.display = (cat === 'all' || t.dataset.cat === cat) ? '' : 'none';
+  });
+
+  // 検索フィールドをクリア
+  document.querySelector('.search-input').value = '';
+  document.getElementById('noResults').style.display = 'none';
+}
+
+function searchCards(q) {
+  const kw = q.trim().toLowerCase();
+  let found = 0;
+  document.querySelectorAll('.card').forEach(c => {
+    const ng = (c.dataset.ng || '').toLowerCase();
+    const ok = (c.dataset.ok || '').toLowerCase();
+    const hit = !kw || ng.includes(kw) || ok.includes(kw);
+    c.style.display = hit ? '' : 'none';
+    if (hit) found++;
+  });
+  document.querySelectorAll('.category-title').forEach(t => t.style.display = kw ? 'none' : '');
+  document.getElementById('noResults').style.display = (!kw || found > 0) ? 'none' : 'block';
+
+  // タブをリセット
+  if (kw) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector('.tab-btn').classList.add('active');
+  }
+}
+</script>
+</body>
+</html>
